@@ -13,12 +13,20 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import nl.martijndorsman.imtpmd.database.DatabaseHelper;
 import nl.martijndorsman.imtpmd.database.DatabaseInfo;
 import nl.martijndorsman.imtpmd.models.CourseModel;
+
+import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar1;
+import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar2;
+import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar3en4;
 
 /**
  * Created by Martijn on 21/05/17.
@@ -66,20 +74,45 @@ public class VakkenlijstActivity extends AppCompatActivity {
             HttpHandler sh = new HttpHandler();
             // Making a request to url and getting response
             String jsonStr = sh.makeServiceCall(url);
-
+            JSONArray jaar1 = null;
+            JSONArray jaar2 = null;
+            JSONArray jaar3en4 = null;
             Log.e(TAG, "Response from url: " + jsonStr);
 
             if (jsonStr != null) {
-                Gson gson = new Gson();
-                CourseModel[] courses = gson.fromJson(jsonStr, CourseModel[].class);
-                DatabaseHelper dbHelper = DatabaseHelper.getHelper(getApplicationContext());
-                for(CourseModel course : courses) {
-                    ContentValues values = new ContentValues();
-                    values.put(DatabaseInfo.CourseColumn.NAME, course.name);
-                    values.put(DatabaseInfo.CourseColumn.ECTS, course.ects);
-                    values.put(DatabaseInfo.CourseColumn.GRADE, course.grade);
-                    dbHelper.insert(DatabaseInfo.CourseTables.COURSE, null, values);
+
+                JSONObject reader = null;
+                try {
+                    reader = new JSONObject(jsonStr);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+                // ontleed de ontvangen json string in stukken van elk jaar
+                try {
+                    if (reader != null) {
+                        jaar1 = reader.getJSONArray("jaar1");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if (reader != null) {
+                        jaar2 = reader.getJSONArray("jaar2");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if (reader != null) {
+                        jaar3en4 = reader.getJSONArray("jaar3en4");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                dbInput(jaar1, Jaar1);
+                dbInput(jaar2, Jaar2);
+                dbInput(jaar3en4, Jaar3en4);
 
             } else {
                 Log.d(TAG, "Couldn't get json from server.");
@@ -93,6 +126,21 @@ public class VakkenlijstActivity extends AppCompatActivity {
             if (pd.isShowing()){
                 pd.dismiss();
                 // hier moet actie
+            }
+        }
+
+        // functie om elke tabel te vullen met content
+        public void dbInput(JSONArray jsonpart, String tabel) {
+            Gson gson = new Gson();
+            CourseModel[] courses1 = gson.fromJson(String.valueOf(jsonpart), CourseModel[].class);
+            DatabaseHelper dbHelper = DatabaseHelper.getHelper(getApplicationContext());
+            for(CourseModel course : courses1) {
+                ContentValues values = new ContentValues();
+                values.put(DatabaseInfo.CourseColumn.NAME, course.name);
+                values.put(DatabaseInfo.CourseColumn.ECTS, course.ects);
+                values.put(DatabaseInfo.CourseColumn.PERIOD, course.period);
+                values.put(DatabaseInfo.CourseColumn.GRADE, course.grade);
+                dbHelper.insert(tabel, null, values);
             }
         }
     }
