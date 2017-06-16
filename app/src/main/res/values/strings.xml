@@ -3,10 +3,9 @@
     <string name="scherm1Button">Studiecheck</string>
     <string name="vakkenlijstbutton">Vakkenlijst ophalen</string>
     <string name="voortgangbekijken">Voortgang bekijken</string>
-    <string name="vak">Vak</string>
     <string name="gemaaktdoor">Gemaakt door Robert Potjes en Martijn Dorsman</string>
-    <string name="studiepunten">Studiepunten</string>
-    <string name="cijfer">Cijfer</string>
-    <string name="periode">Periode</string>
-    <string name="closeButton">Sluiten</string>
+    <string name="name">Vak</string>
+    <string name="ects">Studiepunten</string>
+    <string name="period">Periode</string>
+    <string name="grade">Cijfer</string>
 </resources>

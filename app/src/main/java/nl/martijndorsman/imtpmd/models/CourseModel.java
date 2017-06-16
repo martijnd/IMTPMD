@@ -19,19 +19,35 @@ public class CourseModel implements Serializable {
         this.period = period;
     }
 
-    public String getName(String name){
+    public String getName() {
         return name;
     }
 
-    public String getEcts(String ects){
-        return ects;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getPeriod(String period){
+    public String getPeriod() {
         return period;
     }
 
-    public String getGrade(String grade){
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
+    public String getEcts() {
+        return ects;
+    }
+
+    public void setEcts(String ects) {
+        this.ects = ects;
+    }
+
+    public String getGrade() {
         return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 }
