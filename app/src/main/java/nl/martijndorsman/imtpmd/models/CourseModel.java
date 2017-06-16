@@ -18,4 +18,20 @@ public class CourseModel implements Serializable {
         this.grade = grade;
         this.period = period;
     }
+
+    public String getName(String name){
+        return name;
+    }
+
+    public String getEcts(String ects){
+        return ects;
+    }
+
+    public String getPeriod(String period){
+        return period;
+    }
+
+    public String getGrade(String grade){
+        return grade;
+    }
 }

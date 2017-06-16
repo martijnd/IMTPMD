@@ -2,6 +2,7 @@ package nl.martijndorsman.imtpmd;
 
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -41,22 +43,16 @@ public class VakkenlijstActivity extends AppCompatActivity {
     ProgressDialog pd;
     private String TAG = MainActivity.class.getSimpleName();
     private ListView lv;
+    private boolean success = true;
+    CharSequence text;
     private static String url = "http://martijndorsman.nl/vakken_lijst.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vakkenlijst);
-        lv = (ListView) findViewById(R.id.list);
         vakkenlijst = new ArrayList<>();
         new JsonTask().execute(url);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(view+" lol", position+" haha");
-                //based on item add info to intent
-            }
-        });
     }
 
     private class JsonTask extends AsyncTask<String, String, String> {
@@ -116,6 +112,7 @@ public class VakkenlijstActivity extends AppCompatActivity {
 
             } else {
                 Log.d(TAG, "Couldn't get json from server.");
+                success = false;
             }
             return null;
         }
@@ -125,7 +122,18 @@ public class VakkenlijstActivity extends AppCompatActivity {
             super.onPostExecute(result);
             if (pd.isShowing()){
                 pd.dismiss();
-                // hier moet actie
+                if (success){
+                    text = "Ophalen vakkenlijst succesvol";
+                }
+                else{
+                    text = "Ophalen vakkenlijst mislukt";
+                }
+                Context context = getApplicationContext();
+
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
             }
         }
 
@@ -146,4 +154,3 @@ public class VakkenlijstActivity extends AppCompatActivity {
     }
 
 }
-
