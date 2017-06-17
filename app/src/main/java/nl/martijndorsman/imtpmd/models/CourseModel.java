@@ -7,12 +7,10 @@ import java.io.Serializable;
  */
 
 public class CourseModel implements Serializable {
-    public String period;
     public String name;
+    public String period;
     public String ects;
     public String grade;
-    private String vakCode;
-    private int aantalECTS;
 
     public CourseModel(String courseName, String ects, String grade, String period){
         this.name = courseName;
@@ -21,12 +19,35 @@ public class CourseModel implements Serializable {
         this.period = period;
     }
 
-    public String getName(){
-        return vakCode;
+    public String getName() {
+        return name;
     }
 
-    public String getEcts(){
-        return String.valueOf(aantalECTS);
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
+    public String getEcts() {
+        return ects;
+    }
+
+    public void setEcts(String ects) {
+        this.ects = ects;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
 }

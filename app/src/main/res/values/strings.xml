@@ -1,14 +1,11 @@
 <resources>
     <string name="app_name">Studiecheck</string>
     <string name="scherm1Button">Studiecheck</string>
-    <string name="scherm2Button">Scherm 2</string>
-    <string name="scherm3Button">Scherm 3</string>
-    <string name="scherm4Button">Scherm 4</string>
-    <string name="scherm5Button">Scherm 5</string>
-    <string name="vakkenlijstbutton">Vakkenlijst</string>
-    <string name="vak">Vak</string>
-    <string name="studiepunten">Studiepunten</string>
-    <string name="cijfer">Cijfer</string>
-    <string name="periode">Periode</string>
-    <string name="closeButton">Sluiten</string>
+    <string name="vakkenlijstbutton">Vakkenlijst ophalen</string>
+    <string name="voortgangbekijken">Voortgang bekijken</string>
+    <string name="gemaaktdoor">Gemaakt door Robert Potjes en Martijn Dorsman</string>
+    <string name="name">Vak</string>
+    <string name="ects">Studiepunten</string>
+    <string name="period">Periode</string>
+    <string name="grade">Cijfer</string>
 </resources>
