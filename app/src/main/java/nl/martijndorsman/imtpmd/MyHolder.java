@@ -8,11 +8,14 @@ import android.widget.TextView;
  * Created by Martijn on 16/06/17.
  */
 
+// Klasse om de RecyclerView in te verwerken
+
 public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     TextView nametxt, ectstxt, periodtxt, gradetxt;
-    ItemClickListener itemClickListener;
+    private ItemClickListener itemClickListener;
 
+    // Bind de TextViews aan de id's van de layout
     public MyHolder(View itemView){
         super(itemView);
 

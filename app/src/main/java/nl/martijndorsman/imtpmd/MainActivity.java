@@ -18,8 +18,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Bind de activity aan de layout
         setContentView(R.layout.activity_main);
-
+        // Bind de button aan de onClickListener met de startActivity methode
         Button vakkenlijstbutton = (Button) findViewById(R.id.vakkenlijstbutton);
         vakkenlijstbutton.setOnClickListener(new View.OnClickListener(){
             @Override

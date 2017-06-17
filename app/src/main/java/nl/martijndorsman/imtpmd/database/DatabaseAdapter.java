@@ -20,7 +20,7 @@ public class DatabaseAdapter {
     Context c;
     SQLiteDatabase db;
     DatabaseHelper helper;
-
+    // Maak een DatabaseHelper object met de context van de huidige klasse
     public DatabaseAdapter(Context c){
         this.c = c;
         helper = new DatabaseHelper(c);
@@ -46,7 +46,7 @@ public class DatabaseAdapter {
             e.printStackTrace();
         }
     }
-
+    // Voeg data toe aan de database aan de hand van JSONArrays
     public void addFromJson(JSONArray jsonpart, String tabel){
         try {
             Gson gson = new Gson();
@@ -79,7 +79,7 @@ public class DatabaseAdapter {
         }
         return 0;
     }
-
+    // Haal een hele tabel op
     public Cursor getAllData(String tabel){
         String[] columns = { DatabaseInfo.CourseColumn.NAME,DatabaseInfo.CourseColumn.ECTS,DatabaseInfo.CourseColumn.PERIOD, DatabaseInfo.CourseColumn.GRADE};
         return db.query(tabel, columns, null, null, null, null, null);
