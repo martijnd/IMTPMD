@@ -3,23 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cardview_dark_background">
+    android:background="@color/cardview_shadow_start_color">
 
     <Spinner
         android:id="@+id/popSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_marginTop="106dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="255dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/popButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:text="Button"
+        android:layout_marginTop="27dp"
+        android:text="Bevestig"
+        tools:text="Bevestig"
         android:layout_below="@+id/popSpinner"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
