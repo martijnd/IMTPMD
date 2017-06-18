@@ -2,6 +2,7 @@
     <string name="app_name">Studiecheck</string>
     <string name="scherm1Button">Studiecheck</string>
     <string name="vakkenlijstbutton">Vakkenlijst ophalen</string>
+    <string name="vakkenbekijken">Vakken bekijken</string>
     <string name="voortgangbekijken">Voortgang bekijken</string>
     <string name="gemaaktdoor">Gemaakt door Robert Potjes en Martijn Dorsman</string>
     <string name="name">Vak</string>

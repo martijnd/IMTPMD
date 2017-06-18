@@ -6,12 +6,14 @@ import java.io.Serializable;
  * Created by Martijn on 21/05/17.
  */
 
+// Klasse waarin het model van een course staat vastgesteld, samen met de getters en setters
 public class CourseModel implements Serializable {
     public String name;
     public String period;
     public String ects;
     public String grade;
 
+    //constructor
     public CourseModel(String courseName, String ects, String grade, String period){
         this.name = courseName;
         this.ects = ects;
