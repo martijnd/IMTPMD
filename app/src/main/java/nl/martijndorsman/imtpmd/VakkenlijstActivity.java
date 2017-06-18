@@ -34,6 +34,7 @@ import nl.martijndorsman.imtpmd.database.DatabaseHelper;
 import nl.martijndorsman.imtpmd.database.DatabaseInfo;
 import nl.martijndorsman.imtpmd.models.CourseModel;
 
+import static nl.martijndorsman.imtpmd.MainActivity.courses;
 import static nl.martijndorsman.imtpmd.R.id.nameTxt;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar1;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar2;
@@ -48,18 +49,11 @@ public class VakkenlijstActivity extends AppCompatActivity {
     TextView nametxt, ectstxt, periodtxt, gradetxt;
     RecyclerView rv;
     MyAdapter adapter;
-    ArrayList<CourseModel> courses = new ArrayList<>();
+    SQLiteDatabase db;
     public ArrayList<HashMap<String, String>> vakkenlijst;
-    ProgressDialog pd;
-    DatabaseAdapter db = new DatabaseAdapter(this);
-    public JSONArray jaar1 = null;
-    public JSONArray jaar2 = null;
-    public JSONArray jaar3en4 = null;
-    private String TAG = MainActivity.class.getSimpleName();
-    private boolean success = true;
-    CharSequence text;
+
     // De url waar het json-bestand op staat
-    private static String url = "http://martijndorsman.nl/vakken_lijst.json";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,122 +62,17 @@ public class VakkenlijstActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vakkenlijst);
         vakkenlijst = new ArrayList<>();
         // maak een JsonTask Object aan en voer hem uit met de url
-        new JsonTask().execute(url);
         rv = (RecyclerView) findViewById(R.id.mRecycler);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setItemAnimator(new DefaultItemAnimator());
 
         // adapter
         adapter = new MyAdapter(this, courses);
-    }
-    // Mbh van deze klasse kan er op een 2e thread de JSON-string worden binnengehaald via internet
-    private class JsonTask extends AsyncTask<String, String, String> {
-
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Maak een dialoog voor tijdens het wachten
-            pd = new ProgressDialog(VakkenlijstActivity.this);
-            pd.setMessage("Please wait");
-            pd.setCancelable(false);
-            pd.show();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            HttpHandler sh = new HttpHandler();
-            // Stuur een request naar de url, en wacht op antwoord
-            String jsonStr = sh.makeServiceCall(url);
-
-            Log.e(TAG, "Response from url: " + jsonStr);
-            // Als de json string nog niet binnengehaald is
-            if (jsonStr != null) {
-                //  Maak een JSONObject aan waarmee de string ontleed kan worden
-                JSONObject reader = null;
-                try {
-                    reader = new JSONObject(jsonStr);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                // ontleed de ontvangen json string in stukken van elk jaar
-                try {
-                    if (reader != null) {
-                        jaar1 = reader.getJSONArray("jaar1");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    if (reader != null) {
-                        jaar2 = reader.getJSONArray("jaar2");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    if (reader != null) {
-                        jaar3en4 = reader.getJSONArray("jaar3en4");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                // Voeg de JSON string toe aan de database mbh de addFromJson functie
-                //
-                db.addFromJson(jaar1, Jaar1);
-                db.addFromJson(jaar2, Jaar2);
-                db.addFromJson(jaar3en4, Jaar3en4);
-
-            } else {
-                Log.d(TAG, "Couldn't get json from server.");
-                success = false;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            // Verwijder de dialoog na het binnehalen
-            if (pd.isShowing()) {
-                pd.dismiss();
-                // Verschillende tekst afhankelijk van het resultaat
-                if (success) {
-                    text = "Ophalen vakkenlijst succesvol";
-                } else {
-                    text = "Ophalen vakkenlijst mislukt";
-                }
-                Context context = getApplicationContext();
-                // Maak een Toast voor de UX
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-            }
-        }
+        retrieve(Jaar1);
 
     }
 
-
-    private void save(String tabel, String name, String ects, String period, String grade) {
-        // Maak een nieuw DBAdapter Object aan waarmee de functies gebruikt kunnen worden
-        DatabaseAdapter db = new DatabaseAdapter(this);
-        //OPEN DB
-        db.openDB();
-        //COMMIT NAAR DB
-        long result = db.add(tabel, name, ects, period, grade);
-        if (result > 0) {
-            nametxt.setText("");
-            ectstxt.setText("");
-            periodtxt.setText("");
-            gradetxt.setText("");
-        } else {
-            Snackbar.make(nametxt, "Unable To Save", Snackbar.LENGTH_SHORT).show();
-        }
-        db.closeDB();
-        //VERVERS DE DB
-        retrieve(tabel);
-    }
-
-    //RETRIEVE
+    // Retrieve en bind het aan de recyclerview
     private void retrieve(String tabel) {
         courses.clear();
         DatabaseAdapter db = new DatabaseAdapter(this);
@@ -205,6 +94,6 @@ public class VakkenlijstActivity extends AppCompatActivity {
             rv.setAdapter(adapter);
         }
         db.closeDB();
-        ;
     }
+
 }

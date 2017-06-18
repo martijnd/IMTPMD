@@ -13,6 +13,7 @@ public class CourseModel implements Serializable {
     public String ects;
     public String grade;
 
+    //constructor
     public CourseModel(String courseName, String ects, String grade, String period){
         this.name = courseName;
         this.ects = ects;
