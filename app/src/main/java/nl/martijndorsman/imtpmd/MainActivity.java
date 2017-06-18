@@ -69,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
         vakkenbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, VakkenlijstActivity.class));
+                startActivity(new Intent(MainActivity.this,Pop.class));
+                //startActivity(new Intent(MainActivity.this, VakkenlijstActivity.class));
             }
         });
     }
