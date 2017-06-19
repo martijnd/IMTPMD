@@ -1,16 +1,23 @@
 package nl.martijndorsman.imtpmd;
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 
 import java.util.ArrayList;
 
+import nl.martijndorsman.imtpmd.database.DatabaseAdapter;
 import nl.martijndorsman.imtpmd.models.CourseModel;
 
 /**
@@ -18,6 +25,8 @@ import nl.martijndorsman.imtpmd.models.CourseModel;
  */
 // Adapter om de ViewHolder in te stellen om de RecyclerView te gebruiken met de SQLiteDatabase
 public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
+    EditText gradetxt;
+    Button gradeButton;
     Context c;
     // Een arraylist volgens de layout van de Coursemodel klasse
     ArrayList<CourseModel> courses;
@@ -49,9 +58,36 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
+
+                String name = courses.get(pos).getName();
+                String ects = courses.get(pos).getEcts();
+                String period = courses.get(pos).getEcts();
+                String grade = courses.get(pos).getGrade();
+                // Voeg een invoerscherm toe
+                showDialog(name, ects, period, grade);
                 Snackbar.make(v, courses.get(pos).getName(), Snackbar.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showDialog(final String name, final String ects, final String period, final String newGrade){
+        final String tabel = VakkenlijstActivity.currentTable;
+        final DatabaseAdapter dbAdapter = new DatabaseAdapter(c);
+        final Dialog d = new Dialog(c);
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Log.d("Test", "Geklikt op item");
+        d.setContentView(R.layout.gradeeditwindow);
+        gradetxt = (EditText) d.findViewById(R.id.etGradeEdit);
+        gradeButton = (Button) d.findViewById(R.id.gradeButton);
+        gradeButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Log.d("Test", "Geklikt op item");
+                dbAdapter.update(tabel, name, ects, period, newGrade);
+                d.dismiss();
+            }
+        });
+        d.show();
     }
 
     @Override

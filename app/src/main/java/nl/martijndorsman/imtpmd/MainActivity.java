@@ -3,7 +3,6 @@ package nl.martijndorsman.imtpmd;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +24,7 @@ import nl.martijndorsman.imtpmd.models.CourseModel;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar1;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar2;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar3en4;
+import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Keuze;
 
 /**
  * Created by Martijn on 13/06/17.
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public JSONArray jaar1;
     public JSONArray jaar2;
     public JSONArray jaar3en4;
+    public JSONArray keuze;
     public static ArrayList<CourseModel> courses = new ArrayList<>();
     MyAdapter adapter;
     RecyclerView rv;
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         vakkenbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,Pop.class));
+                startActivity(new Intent(MainActivity.this,PopSpinner.class));
                 //startActivity(new Intent(MainActivity.this, VakkenlijstActivity.class));
             }
         });
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            // Maak een dialoog voor tijdens het wachten
+            // Maak een dialoog voor tijdens het wachten (User Feedback)
             pd = new ProgressDialog(MainActivity.this);
             pd.setMessage("Please wait");
             pd.setCancelable(false);
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             // Stuur een request naar de url, en wacht op antwoord
             String jsonStr = sh.makeServiceCall(url);
 
-//            Log.e(TAG, "Response from url: " + jsonStr);
+            Log.e(TAG, "Response from url: " + jsonStr);
             // Als de json string nog niet binnengehaald is
             if (jsonStr != null) {
                 //  Maak een JSONObject aan waarmee de string ontleed kan worden
@@ -108,31 +109,21 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     if (reader != null) {
                         jaar1 = reader.getJSONArray("jaar1");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    if (reader != null) {
                         jaar2 = reader.getJSONArray("jaar2");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    if (reader != null) {
                         jaar3en4 = reader.getJSONArray("jaar3en4");
+                        keuze = reader.getJSONArray("keuze");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
                 // Voeg de JSON string toe aan de database mbh de addFromJson functie
-                //
                 try {
                     dbAdapter.openDB();
                     dbAdapter.addFromJson(jaar1, Jaar1);
                     dbAdapter.addFromJson(jaar2, Jaar2);
                     dbAdapter.addFromJson(jaar3en4, Jaar3en4);
+                    dbAdapter.addFromJson(keuze, Keuze);
                     dbAdapter.closeDB();
 
                 } catch(NullPointerException e){
@@ -159,10 +150,10 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     text = "Ophalen vakkenlijst mislukt";
                 }
-                Context context = getApplicationContext();
-                // Maak een Toast voor de UX
-                int duration = Toast.LENGTH_SHORT;
 
+                // Maak een Toast voor de User Experience
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
 

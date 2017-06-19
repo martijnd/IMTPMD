@@ -9,16 +9,16 @@ import java.io.Serializable;
 // Klasse waarin het model van een course staat vastgesteld, samen met de getters en setters
 public class CourseModel implements Serializable {
     public String name;
-    public String period;
     public String ects;
+    public String period;
     public String grade;
 
     //constructor
-    public CourseModel(String courseName, String ects, String grade, String period){
+    public CourseModel(String courseName, String ects, String period, String grade){
         this.name = courseName;
         this.ects = ects;
-        this.grade = grade;
         this.period = period;
+        this.grade = grade;
     }
 
     public String getName() {
@@ -29,20 +29,20 @@ public class CourseModel implements Serializable {
         this.name = name;
     }
 
-    public String getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(String period) {
-        this.period = period;
-    }
-
     public String getEcts() {
         return ects;
     }
 
     public void setEcts(String ects) {
         this.ects = ects;
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
     }
 
     public String getGrade() {

@@ -6,7 +6,9 @@
     <string name="voortgangbekijken">Voortgang bekijken</string>
     <string name="gemaaktdoor">Gemaakt door Robert Potjes en Martijn Dorsman</string>
     <string name="name">Vak</string>
-    <string name="ects">Studiepunten</string>
+    <string name="ects">ECTS</string>
     <string name="period">Periode</string>
     <string name="grade">Cijfer</string>
+  <string name="bevestig">Bevestig</string>
+    <string name="cijferaanpassen">Cijfer aanpassen</string>
 </resources>

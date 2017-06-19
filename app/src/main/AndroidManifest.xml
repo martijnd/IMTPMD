@@ -19,7 +19,7 @@
         </activity>
         <activity android:name=".VakkenlijstActivity">
         </activity>
-        <activity android:name=".Pop"
+        <activity android:name=".PopSpinner"
             android:theme= "@style/AppTheme.PopTheme">
         </activity>
     </application>

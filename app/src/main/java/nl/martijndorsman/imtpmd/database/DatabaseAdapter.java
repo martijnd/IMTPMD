@@ -69,17 +69,16 @@ public class DatabaseAdapter {
             e.printStackTrace();
         }
     }
-
-    public void update(String tabel, String name, String ects, String period, String nieuwCijfer) {
+        // TODO: Fix onderstaande functie zodat hij het cijfer goed update
+    public long update(String tabel, String name, String ects, String period, String nieuwCijfer) {
         DatabaseHelper dbHelper = new DatabaseHelper(c);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         //Nieuwe waarde voor een kolom
         ContentValues values = new ContentValues();
-        values.put(DatabaseInfo.CourseColumn.NAME, name);
-        values.put(DatabaseInfo.CourseColumn.ECTS, ects);
-        values.put(DatabaseInfo.CourseColumn.PERIOD, period);
         values.put(DatabaseInfo.CourseColumn.GRADE, nieuwCijfer);
-        db.update(tabel, values, "NAME = ?", new String[] {name});
+        String selection = DatabaseInfo.CourseColumn.NAME + " LIKE " + name;
+        String[] selectionArgs = { name };
+        return db.update(tabel, values, "NAME LIKE 'iarch'", null);
     }
 
     public static String tableToString(String tableName) {

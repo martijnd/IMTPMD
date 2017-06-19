@@ -1,6 +1,7 @@
 package nl.martijndorsman.imtpmd;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
@@ -15,8 +16,8 @@ import android.util.Log;
  * Created by Robert on 18-6-2017.
  */
 
-public class Pop extends Activity{
-
+public class PopSpinner extends Activity{
+    public static String item;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +35,7 @@ public class Pop extends Activity{
         getWindow().setLayout((int)(width*.8),(int)(heigth*.4));
 
         String[] arraySpinner = new String[]{
-                "Jaar 1", "Jaar 2", "Jaar 3", "Jaar 4"
+                "Jaar 1", "Jaar 2", "Jaar 3 en 4", "Keuzevakken"
         };
         final Spinner s = (Spinner) findViewById(R.id.popSpinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
@@ -45,8 +46,9 @@ public class Pop extends Activity{
         popbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
-                String item = s.getSelectedItem().toString();
+                item = s.getSelectedItem().toString();
                 Log.w("PopMessage", "Value of Item: " +  item);
+                startActivity(new Intent(PopSpinner.this, VakkenlijstActivity.class));
             }
         });
 

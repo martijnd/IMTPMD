@@ -19,7 +19,7 @@ public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickLis
     public MyHolder(View itemView){
         super(itemView);
 
-        nametxt = (TextView) itemView.findViewById(R.id.nameTxt);
+        nametxt = (TextView) itemView.findViewById(R.id.nametxt);
         ectstxt = (TextView) itemView.findViewById(R.id.ectstxt);
         periodtxt = (TextView) itemView.findViewById(R.id.periodtxt);
         gradetxt = (TextView) itemView.findViewById(R.id.gradetxt);

@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorButton">#ef6c00</color>
     <color name="subtext">#bebebe</color>
+    <color name="colorPopSpinner">#f5f5f5</color>
 </resources>

@@ -1,44 +1,26 @@
 package nl.martijndorsman.imtpmd;
 
-import android.app.LoaderManager;
-import android.app.ProgressDialog;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import nl.martijndorsman.imtpmd.database.DatabaseAdapter;
-import nl.martijndorsman.imtpmd.database.DatabaseHelper;
-import nl.martijndorsman.imtpmd.database.DatabaseInfo;
 import nl.martijndorsman.imtpmd.models.CourseModel;
 
 import static nl.martijndorsman.imtpmd.MainActivity.courses;
-import static nl.martijndorsman.imtpmd.R.id.nameTxt;
+import static nl.martijndorsman.imtpmd.PopSpinner.item;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar1;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar2;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar3en4;
+import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Keuze;
 
 /**
  * Created by Martijn on 21/05/17.
@@ -46,6 +28,7 @@ import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar3e
 
 public class VakkenlijstActivity extends AppCompatActivity {
     // init de variabelen
+    public static String currentTable = "";
     TextView nametxt, ectstxt, periodtxt, gradetxt;
     RecyclerView rv;
     MyAdapter adapter;
@@ -68,8 +51,8 @@ public class VakkenlijstActivity extends AppCompatActivity {
 
         // adapter
         adapter = new MyAdapter(this, courses);
-        retrieve(Jaar1);
-
+        // laad de tabel afhankelijk van de waarde van de PopSpinner
+        tableSwitch();
     }
 
     // Retrieve en bind het aan de recyclerview
@@ -92,8 +75,27 @@ public class VakkenlijstActivity extends AppCompatActivity {
         //CHECK OF DE ARRAYLIST LEEG IS
         if (!(courses.size() < 1)) {
             rv.setAdapter(adapter);
+
         }
+        adapter.notifyDataSetChanged();
         db.closeDB();
     }
 
+    private void tableSwitch (){
+        switch (item){
+            case "Jaar 1":
+                currentTable = "Jaar1";
+                retrieve(Jaar1);
+                break;
+            case "Jaar 2": retrieve(Jaar2);
+                currentTable = "Jaar2";
+                break;
+            case "Jaar 3 en 4": retrieve(Jaar3en4);
+                currentTable = "Jaar3en4";
+                break;
+            case "Keuzevakken": retrieve(Keuze);
+                currentTable = "Keuze";
+                break;
+        }
+    }
 }
