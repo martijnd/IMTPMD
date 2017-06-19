@@ -80,9 +80,9 @@ public class DatabaseAdapter {
         Log.w("DB Values", values.toString());
         values.put(DatabaseInfo.CourseColumn.GRADE, nieuwCijfer);
         String selection = DatabaseInfo.CourseColumn.NAME + " LIKE " + name;
-
         String[] selectionArgs = { name };
-        return db.update(tabel, values, "NAME LIKE 'iarch'", null);
+        return db.update(tabel, values, "NAME LIKE '" + name + "'", null);
+
     }
 
     public static String tableToString(String tableName) {

@@ -1,5 +1,6 @@
 package nl.martijndorsman.imtpmd;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -54,6 +55,7 @@ public class VakkenlijstActivity extends AppCompatActivity {
         // laad de tabel afhankelijk van de waarde van de PopSpinner
         tableSwitch();
     }
+
 
     // Retrieve en bind het aan de recyclerview
     private void retrieve(String tabel) {

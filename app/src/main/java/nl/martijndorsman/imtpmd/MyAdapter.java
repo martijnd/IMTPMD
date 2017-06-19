@@ -1,12 +1,10 @@
 package nl.martijndorsman.imtpmd;
 
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,12 +68,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
         });
     }
 
+    //TODO: Zorgen dat er een refresh op de activity VakkenLijst komt.
     private void showDialog(final String name, final String ects, final String period, final String newGrade){
         final String tabel = VakkenlijstActivity.currentTable;
         final DatabaseAdapter dbAdapter = new DatabaseAdapter(c);
         final Dialog d = new Dialog(c);
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Log.d("Test", "Geklikt op item");
         d.setContentView(R.layout.gradeeditwindow);
         gradetxt = (EditText) d.findViewById(R.id.etGradeEdit);
         gradeButton = (Button) d.findViewById(R.id.gradeButton);
@@ -85,7 +83,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
                 String newGrade = gradetxt.getText().toString();
                 dbAdapter.update(tabel, name, ects, period, newGrade);
                 d.dismiss();
-
             }
         });
         d.show();
