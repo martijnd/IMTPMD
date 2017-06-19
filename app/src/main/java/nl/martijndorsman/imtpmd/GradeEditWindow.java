@@ -1,11 +1,15 @@
 package nl.martijndorsman.imtpmd;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import nl.martijndorsman.imtpmd.database.DatabaseAdapter;
 
 /**
  * Created by Martijn on 19/06/17.
@@ -30,7 +34,6 @@ public class GradeEditWindow extends Activity {
         int height = dm.heightPixels;
 
         getWindow().setLayout((int) (width*.8), (int) (height*.4));
-
         final EditText gradeEdit = (EditText) findViewById(R.id.etGradeEdit);
         final Button gradeButton = (Button) findViewById(R.id.gradeButton);
         gradeButton.setOnClickListener(new View.OnClickListener() {

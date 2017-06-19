@@ -61,7 +61,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
 
                 String name = courses.get(pos).getName();
                 String ects = courses.get(pos).getEcts();
-                String period = courses.get(pos).getEcts();
+                String period = courses.get(pos).getPeriod();
                 String grade = courses.get(pos).getGrade();
                 // Voeg een invoerscherm toe
                 showDialog(name, ects, period, grade);
@@ -82,9 +82,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
         gradeButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Log.d("Test", "Geklikt op item");
+                String newGrade = gradetxt.getText().toString();
                 dbAdapter.update(tabel, name, ects, period, newGrade);
                 d.dismiss();
+
             }
         });
         d.show();

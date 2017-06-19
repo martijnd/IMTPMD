@@ -19,9 +19,10 @@ import nl.martijndorsman.imtpmd.models.CourseModel;
  */
 
 public class DatabaseAdapter {
-    static Context c;
+    public static Context c;
     static SQLiteDatabase db;
     DatabaseHelper helper;
+
     // Maak een DatabaseHelper object met de context van de huidige klasse
     public DatabaseAdapter(Context c){
         this.c = c;
@@ -70,13 +71,16 @@ public class DatabaseAdapter {
         }
     }
         // TODO: Fix onderstaande functie zodat hij het cijfer goed update
+
     public long update(String tabel, String name, String ects, String period, String nieuwCijfer) {
         DatabaseHelper dbHelper = new DatabaseHelper(c);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         //Nieuwe waarde voor een kolom
         ContentValues values = new ContentValues();
+        Log.w("DB Values", values.toString());
         values.put(DatabaseInfo.CourseColumn.GRADE, nieuwCijfer);
         String selection = DatabaseInfo.CourseColumn.NAME + " LIKE " + name;
+
         String[] selectionArgs = { name };
         return db.update(tabel, values, "NAME LIKE 'iarch'", null);
     }
