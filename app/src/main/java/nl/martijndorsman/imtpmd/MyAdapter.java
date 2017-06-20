@@ -12,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,7 @@ import nl.martijndorsman.imtpmd.models.CourseModel;
 // Adapter om de ViewHolder in te stellen om de RecyclerView te gebruiken met de SQLiteDatabase
 public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
     EditText gradetxt;
-    Button gradeButton;
+    Button gradeButton, cancelButton;
     Context c;
     // Een arraylist volgens de layout van de Coursemodel klasse
     ArrayList<CourseModel> courses;
@@ -66,6 +68,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
                 // Voeg een invoerscherm toe
                 showDialog(name, ects, period, grade);
                 Snackbar.make(v, courses.get(pos).getName(), Snackbar.LENGTH_SHORT).show();
+                notifyDataSetChanged();
             }
         });
     }
@@ -79,13 +82,41 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
         d.setContentView(R.layout.gradeeditwindow);
         gradetxt = (EditText) d.findViewById(R.id.etGradeEdit);
         gradeButton = (Button) d.findViewById(R.id.gradeButton);
+        cancelButton = (Button) d.findViewById(R.id.cancelButton);
+
+        gradetxt.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View view, boolean focused)
+            {
+                if (focused)
+                {
+                    d.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
+            }
+        });
+
         gradeButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 String newGrade = gradetxt.getText().toString();
-                dbAdapter.update(tabel, name, ects, period, newGrade);
+                if(!newGrade.equals("")) {
+                    Double newGradeDouble = Double.parseDouble(newGrade);
+                    if (newGradeDouble <= 10 && newGradeDouble > 0) {
+                        dbAdapter.update(tabel, name, ects, period, newGrade);
+                        d.dismiss();
+                        notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(c, "Geef een cijfer tussen de 1 en 10", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(c, "Geef een cijfer tussen de 1 en 10", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 d.dismiss();
-
             }
         });
         d.show();
@@ -95,4 +126,5 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
     public int getItemCount() {
         return courses.size();
     }
+
 }

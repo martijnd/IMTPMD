@@ -12,6 +12,8 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.Arrays;
+
 import nl.martijndorsman.imtpmd.models.CourseModel;
 
 /**
@@ -70,7 +72,6 @@ public class DatabaseAdapter {
             e.printStackTrace();
         }
     }
-        // TODO: Fix onderstaande functie zodat hij het cijfer goed update
 
     public long update(String tabel, String name, String ects, String period, String nieuwCijfer) {
         DatabaseHelper dbHelper = new DatabaseHelper(c);
@@ -79,39 +80,39 @@ public class DatabaseAdapter {
         ContentValues values = new ContentValues();
         Log.w("DB Values", values.toString());
         values.put(DatabaseInfo.CourseColumn.GRADE, nieuwCijfer);
-        String selection = DatabaseInfo.CourseColumn.NAME + " LIKE " + name;
+        String selection = DatabaseInfo.CourseColumn.NAME + " = ?";
 
-        String[] selectionArgs = { name };
-        return db.update(tabel, values, "NAME LIKE 'iarch'", null);
+        String[] selectionArgs = new String[]{ name };
+        return db.update(tabel, values, selection, selectionArgs);
     }
 
-    public static String tableToString(String tableName) {
-        DatabaseAdapter dbAdapter = new DatabaseAdapter(c);
-        dbAdapter.openDB();
-        Log.d("","tableToString called");
-        String tableString = String.format("Table %s:\n", tableName);
-        Cursor allRows  = db.rawQuery("SELECT * FROM " + tableName, null);
-        tableString += cursorToString(allRows);
-        return tableString;
-    }
-
-    public static String cursorToString(Cursor cursor){
-        String cursorString = "";
-        if (cursor.moveToFirst() ){
-            String[] columnNames = cursor.getColumnNames();
-            for (String name: columnNames)
-                cursorString += String.format("%s ][ ", name);
-            cursorString += "\n";
-            do {
-                for (String name: columnNames) {
-                    cursorString += String.format("%s ][ ",
-                            cursor.getString(cursor.getColumnIndex(name)));
-                }
-                cursorString += "\n";
-            } while (cursor.moveToNext());
-        }
-        return cursorString;
-    }
+//    public static String tableToString(String tableName) {
+//        DatabaseAdapter dbAdapter = new DatabaseAdapter(c);
+//        dbAdapter.openDB();
+//        Log.d("","tableToString called");
+//        String tableString = String.format("Table %s:\n", tableName);
+//        Cursor allRows  = db.rawQuery("SELECT * FROM " + tableName, null);
+//        tableString += cursorToString(allRows);
+//        return tableString;
+//    }
+//
+//    public static String cursorToString(Cursor cursor){
+//        String cursorString = "";
+//        if (cursor.moveToFirst() ){
+//            String[] columnNames = cursor.getColumnNames();
+//            for (String name: columnNames)
+//                cursorString += String.format("%s ][ ", name);
+//            cursorString += "\n";
+//            do {
+//                for (String name: columnNames) {
+//                    cursorString += String.format("%s ][ ",
+//                            cursor.getString(cursor.getColumnIndex(name)));
+//                }
+//                cursorString += "\n";
+//            } while (cursor.moveToNext());
+//        }
+//        return cursorString;
+//    }
 
 
     // insert into database

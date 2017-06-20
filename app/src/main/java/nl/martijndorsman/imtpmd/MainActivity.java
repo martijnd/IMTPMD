@@ -1,15 +1,21 @@
 package nl.martijndorsman.imtpmd;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -31,6 +37,7 @@ import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Keuze;
  */
 
 public class MainActivity extends AppCompatActivity {
+    public static String item;
     ProgressDialog pd;
     boolean check = false;
     DatabaseAdapter dbAdapter = new DatabaseAdapter(this);
@@ -40,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public JSONArray keuze;
     public static ArrayList<CourseModel> courses = new ArrayList<>();
     MyAdapter adapter;
+    public SpinnerAdapter spinnerAdapter;
     RecyclerView rv;
     private String TAG = MainActivity.class.getSimpleName();
     private boolean success = true;
@@ -54,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
         // Bind de button aan de onClickListener met de startActivity methode
         Button vakkenlijstbutton = (Button) findViewById(R.id.vakkenlijstbutton);
         Button vakkenbutton = (Button) findViewById(R.id.vakkenbutton);
+
+
+
 
         vakkenlijstbutton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -70,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         vakkenbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                showDialog();
                 startActivity(new Intent(MainActivity.this,PopSpinner.class));
                 //startActivity(new Intent(MainActivity.this, VakkenlijstActivity.class));
             }
@@ -160,5 +172,34 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    private void showDialog(){
+        final Dialog d = new Dialog(MainActivity.this);
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        d.setContentView(R.layout.choosetablewindow);
+        String[] arraySpinner = new String[]{
+                "Jaar 1", "Jaar 2", "Jaar 3 en 4", "Keuzevakken"};
+        final Spinner s = (Spinner) findViewById(R.id.tableSpinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, arraySpinner);
+        s.setAdapter(adapter);
+
+
+        final Button acceptButton = (Button) findViewById(R.id.tableButton);
+        final Button cancelButton = (Button) findViewById(R.id.cancelButton1);
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item = s.getSelectedItem().toString();
+                startActivity(new Intent(MainActivity.this, VakkenlijstActivity.class));
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
     }
 }

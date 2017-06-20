@@ -1,5 +1,6 @@
 package nl.martijndorsman.imtpmd;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -29,12 +30,8 @@ import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Keuze;
 public class VakkenlijstActivity extends AppCompatActivity {
     // init de variabelen
     public static String currentTable = "";
-    TextView nametxt, ectstxt, periodtxt, gradetxt;
-    RecyclerView rv;
-    MyAdapter adapter;
-    SQLiteDatabase db;
-    public ArrayList<HashMap<String, String>> vakkenlijst;
-
+    static RecyclerView rv;
+    static MyAdapter adapter;
     // De url waar het json-bestand op staat
 
 
@@ -43,7 +40,6 @@ public class VakkenlijstActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vakkenlijst);
-        vakkenlijst = new ArrayList<>();
         // maak een JsonTask Object aan en voer hem uit met de url
         rv = (RecyclerView) findViewById(R.id.mRecycler);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -53,10 +49,13 @@ public class VakkenlijstActivity extends AppCompatActivity {
         adapter = new MyAdapter(this, courses);
         // laad de tabel afhankelijk van de waarde van de PopSpinner
         tableSwitch();
+        adapter.notifyDataSetChanged();
     }
 
+
+
     // Retrieve en bind het aan de recyclerview
-    private void retrieve(String tabel) {
+    public void retrieve(String tabel) {
         courses.clear();
         DatabaseAdapter db = new DatabaseAdapter(this);
         db.openDB();
@@ -72,12 +71,13 @@ public class VakkenlijstActivity extends AppCompatActivity {
             //VOEG TOE AAN ARRAYLIST
             courses.add(p);
         }
+        adapter.notifyDataSetChanged();
         //CHECK OF DE ARRAYLIST LEEG IS
         if (!(courses.size() < 1)) {
             rv.setAdapter(adapter);
 
         }
-        adapter.notifyDataSetChanged();
+        c.close();
         db.closeDB();
     }
 
