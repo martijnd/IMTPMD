@@ -45,13 +45,14 @@ public class MainActivity extends AppCompatActivity {
     public JSONArray jaar2;
     public JSONArray jaar3en4;
     public JSONArray keuze;
-    public static ArrayList<CourseModel> courses = new ArrayList<>();
+
     MyAdapter adapter;
     public SpinnerAdapter spinnerAdapter;
     RecyclerView rv;
     private String TAG = MainActivity.class.getSimpleName();
     private boolean success = true;
     CharSequence text;
+    // De url waar het json-bestand op staat
     private static String url = "http://martijndorsman.nl/vakken_lijst.json";
 
     @Override

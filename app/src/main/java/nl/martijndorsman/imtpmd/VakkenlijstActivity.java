@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,9 +15,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import nl.martijndorsman.imtpmd.database.DatabaseAdapter;
+import nl.martijndorsman.imtpmd.database.DatabaseHelper;
 import nl.martijndorsman.imtpmd.models.CourseModel;
 
-import static nl.martijndorsman.imtpmd.MainActivity.courses;
 import static nl.martijndorsman.imtpmd.PopSpinner.item;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar1;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar2;
@@ -32,7 +33,9 @@ public class VakkenlijstActivity extends AppCompatActivity {
     public static String currentTable = "";
     static RecyclerView rv;
     static MyAdapter adapter;
-    // De url waar het json-bestand op staat
+    public DatabaseHelper helper;
+    DatabaseAdapter dbAdapter;
+    public ArrayList<CourseModel> courses = new ArrayList<>();
 
 
     @Override
@@ -44,7 +47,7 @@ public class VakkenlijstActivity extends AppCompatActivity {
         rv = (RecyclerView) findViewById(R.id.mRecycler);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setItemAnimator(new DefaultItemAnimator());
-
+        helper = new DatabaseHelper(this);
         // adapter
         adapter = new MyAdapter(this, courses);
         // laad de tabel afhankelijk van de waarde van de PopSpinner
@@ -52,15 +55,13 @@ public class VakkenlijstActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-
-
     // Retrieve en bind het aan de recyclerview
-    public void retrieve(String tabel) {
+    public void retrieve(String tabel, Context context) {
+        dbAdapter = new DatabaseAdapter(context);
+        dbAdapter.openDB();
         courses.clear();
-        DatabaseAdapter db = new DatabaseAdapter(this);
-        db.openDB();
-        //RETRIEVE
-        Cursor c = db.getAllData(tabel);
+
+        Cursor c = dbAdapter.getAllData(tabel);
         //LOOP EN VOEG AAN ARRAYLIST TOE
         while (c.moveToNext()) {
             String name = c.getString(0);
@@ -78,22 +79,22 @@ public class VakkenlijstActivity extends AppCompatActivity {
 
         }
         c.close();
-        db.closeDB();
+        dbAdapter.closeDB();
     }
 
     private void tableSwitch (){
         switch (item){
             case "Jaar 1":
                 currentTable = "Jaar1";
-                retrieve(Jaar1);
+                retrieve(Jaar1, this);
                 break;
-            case "Jaar 2": retrieve(Jaar2);
+            case "Jaar 2": retrieve(Jaar2, this);
                 currentTable = "Jaar2";
                 break;
-            case "Jaar 3 en 4": retrieve(Jaar3en4);
+            case "Jaar 3 en 4": retrieve(Jaar3en4, this);
                 currentTable = "Jaar3en4";
                 break;
-            case "Keuzevakken": retrieve(Keuze);
+            case "Keuzevakken": retrieve(Keuze, this);
                 currentTable = "Keuze";
                 break;
         }

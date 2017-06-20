@@ -31,14 +31,13 @@
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignRight="@+id/tableSpinner"
-        android:layout_below="@+id/tableSpinner"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="47dp"
         android:minWidth="64dp"
         android:padding="8dp"
-        android:text="@string/bevestig" />
+        android:text="@string/bevestig"
+        android:layout_below="@+id/tableSpinner"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:id="@+id/cancelButton1"

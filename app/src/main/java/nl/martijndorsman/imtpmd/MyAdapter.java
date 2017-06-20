@@ -27,13 +27,15 @@ import nl.martijndorsman.imtpmd.models.CourseModel;
  */
 // Adapter om de ViewHolder in te stellen om de RecyclerView te gebruiken met de SQLiteDatabase
 public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
-    EditText gradetxt;
-    Button gradeButton, cancelButton;
-    Context c;
+    private EditText gradetxt;
+    private Button gradeButton, cancelButton;
+    Context context;
+    VakkenlijstActivity vlActivity = new VakkenlijstActivity();
     // Een arraylist volgens de layout van de Coursemodel klasse
     ArrayList<CourseModel> courses;
-    public MyAdapter(Context c, ArrayList<CourseModel> courses){
-        this.c = c;
+
+    public MyAdapter(Context context, ArrayList<CourseModel> courses){
+        this.context = context;
         this.courses = courses;
     }
 
@@ -68,15 +70,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
                 // Voeg een invoerscherm toe
                 showDialog(name, ects, period, grade);
                 Snackbar.make(v, courses.get(pos).getName(), Snackbar.LENGTH_SHORT).show();
-                notifyDataSetChanged();
             }
         });
     }
 
     private void showDialog(final String name, final String ects, final String period, final String newGrade){
         final String tabel = VakkenlijstActivity.currentTable;
-        final DatabaseAdapter dbAdapter = new DatabaseAdapter(c);
-        final Dialog d = new Dialog(c);
+        final DatabaseAdapter dbAdapter = new DatabaseAdapter(context);
+        final Dialog d = new Dialog(context);
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Log.d("Test", "Geklikt op item");
         d.setContentView(R.layout.gradeeditwindow);
@@ -102,14 +103,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
                 if(!newGrade.equals("")) {
                     Double newGradeDouble = Double.parseDouble(newGrade);
                     if (newGradeDouble <= 10 && newGradeDouble > 0) {
-                        dbAdapter.update(tabel, name, ects, period, newGrade);
+                        dbAdapter.openDB();
+                        dbAdapter.update(tabel, name, newGrade);
                         d.dismiss();
-                        notifyDataSetChanged();
+                        vlActivity.retrieve(tabel, context);
+                        dbAdapter.closeDB();
                     } else {
-                        Toast.makeText(c, "Geef een cijfer tussen de 1 en 10", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Geef een cijfer tussen de 1 en 10", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(c, "Geef een cijfer tussen de 1 en 10", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Geef een cijfer tussen de 1 en 10", Toast.LENGTH_SHORT).show();
                 }
             }
         });

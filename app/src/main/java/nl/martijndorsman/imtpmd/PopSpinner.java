@@ -33,7 +33,7 @@ public class PopSpinner extends Activity{
         int width = dm.widthPixels;
         int heigth = dm.heightPixels;
 
-        getWindow().setLayout((int)(width*.8),(int)(heigth*.35));
+        getWindow().setLayout((int)(width*.8),(int)(heigth*.4));
         WindowManager.LayoutParams windowManager = getWindow().getAttributes();
         windowManager.dimAmount = 0.75f;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -43,7 +43,7 @@ public class PopSpinner extends Activity{
         };
         final Spinner s = (Spinner) findViewById(R.id.tableSpinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, arraySpinner);
+                R.layout.spinner_item, arraySpinner);
         s.setAdapter(adapter);
 
         final Button popbutton = (Button) findViewById(R.id.tableButton);
