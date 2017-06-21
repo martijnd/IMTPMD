@@ -1,14 +1,12 @@
 package nl.martijndorsman.imtpmd;
 
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,12 +80,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
         });
     }
 
+
     private void showDialog(final String name, final int pos){
         final String tabel = VakkenlijstActivity.currentTable;
         final DatabaseAdapter dbAdapter = new DatabaseAdapter(context);
         final Dialog d = new Dialog(context);
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Log.d("Test", "Geklikt op item");
         d.setContentView(R.layout.gradeeditwindow);
         gradetxt = (EditText) d.findViewById(R.id.etGradeEdit);
         gradeButton = (Button) d.findViewById(R.id.gradeButton);
