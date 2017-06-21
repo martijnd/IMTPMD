@@ -1,44 +1,28 @@
 package nl.martijndorsman.imtpmd;
 
-import android.app.LoaderManager;
-import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import nl.martijndorsman.imtpmd.database.DatabaseAdapter;
 import nl.martijndorsman.imtpmd.database.DatabaseHelper;
-import nl.martijndorsman.imtpmd.database.DatabaseInfo;
 import nl.martijndorsman.imtpmd.models.CourseModel;
 
-import static nl.martijndorsman.imtpmd.MainActivity.courses;
-import static nl.martijndorsman.imtpmd.R.id.nameTxt;
+import static nl.martijndorsman.imtpmd.PopSpinner.item;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar1;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar2;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar3en4;
+import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Keuze;
 
 /**
  * Created by Martijn on 21/05/17.
@@ -46,13 +30,12 @@ import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar3e
 
 public class VakkenlijstActivity extends AppCompatActivity {
     // init de variabelen
-    TextView nametxt, ectstxt, periodtxt, gradetxt;
-    RecyclerView rv;
-    MyAdapter adapter;
-    SQLiteDatabase db;
-    public ArrayList<HashMap<String, String>> vakkenlijst;
-
-    // De url waar het json-bestand op staat
+    public static String currentTable = "";
+    static RecyclerView rv;
+    static MyAdapter adapter;
+    public DatabaseHelper helper;
+    DatabaseAdapter dbAdapter;
+    public ArrayList<CourseModel> courses = new ArrayList<>();
 
 
     @Override
@@ -60,32 +43,37 @@ public class VakkenlijstActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vakkenlijst);
-        vakkenlijst = new ArrayList<>();
         // maak een JsonTask Object aan en voer hem uit met de url
         rv = (RecyclerView) findViewById(R.id.mRecycler);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setItemAnimator(new DefaultItemAnimator());
-
+        helper = new DatabaseHelper(this);
         // adapter
         adapter = new MyAdapter(this, courses);
-        retrieve(Jaar1);
-
+        // laad de tabel afhankelijk van de waarde van de PopSpinner
+        tableSwitch();
+        adapter.notifyDataSetChanged();
     }
 
     // Retrieve en bind het aan de recyclerview
-    private void retrieve(String tabel) {
+    public void retrieve(String tabel, Context context) {
+        dbAdapter = new DatabaseAdapter(context);
+        dbAdapter.openDB();
         courses.clear();
-        DatabaseAdapter db = new DatabaseAdapter(this);
-        db.openDB();
-        //RETRIEVE
-        Cursor c = db.getAllData(tabel);
+
+        Cursor c = dbAdapter.getAllData(tabel);
         //LOOP EN VOEG AAN ARRAYLIST TOE
         while (c.moveToNext()) {
             String name = c.getString(0);
             String ects = c.getString(1);
             String period = c.getString(2);
             String grade = c.getString(3);
-            CourseModel p = new CourseModel(name, ects, period, grade);
+            String status = "Niet behaald";
+            Double gradeDouble = Double.parseDouble(grade);
+            if (gradeDouble>=5.5){
+                status = "Behaald";
+            }
+            CourseModel p = new CourseModel(name, ects, period, grade, status);
             //VOEG TOE AAN ARRAYLIST
             courses.add(p);
         }
@@ -93,7 +81,25 @@ public class VakkenlijstActivity extends AppCompatActivity {
         if (!(courses.size() < 1)) {
             rv.setAdapter(adapter);
         }
-        db.closeDB();
+        c.close();
+        dbAdapter.closeDB();
     }
 
+    private void tableSwitch (){
+        switch (item){
+            case "Jaar 1":
+                currentTable = "Jaar1";
+                retrieve(Jaar1, this);
+                break;
+            case "Jaar 2": retrieve(Jaar2, this);
+                currentTable = "Jaar2";
+                break;
+            case "Jaar 3 en 4": retrieve(Jaar3en4, this);
+                currentTable = "Jaar3en4";
+                break;
+            case "Keuzevakken": retrieve(Keuze, this);
+                currentTable = "Keuze";
+                break;
+        }
+    }
 }

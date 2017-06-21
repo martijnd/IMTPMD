@@ -1,16 +1,21 @@
 package nl.martijndorsman.imtpmd;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -25,24 +30,29 @@ import nl.martijndorsman.imtpmd.models.CourseModel;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar1;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar2;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar3en4;
+import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Keuze;
 
 /**
  * Created by Martijn on 13/06/17.
  */
 
 public class MainActivity extends AppCompatActivity {
+    public static String item;
     ProgressDialog pd;
     boolean check = false;
     DatabaseAdapter dbAdapter = new DatabaseAdapter(this);
     public JSONArray jaar1;
     public JSONArray jaar2;
     public JSONArray jaar3en4;
-    public static ArrayList<CourseModel> courses = new ArrayList<>();
+    public JSONArray keuze;
+
     MyAdapter adapter;
+    public SpinnerAdapter spinnerAdapter;
     RecyclerView rv;
     private String TAG = MainActivity.class.getSimpleName();
     private boolean success = true;
     CharSequence text;
+    // De url waar het json-bestand op staat
     private static String url = "http://martijndorsman.nl/vakken_lijst.json";
 
     @Override
@@ -53,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
         // Bind de button aan de onClickListener met de startActivity methode
         Button vakkenlijstbutton = (Button) findViewById(R.id.vakkenlijstbutton);
         Button vakkenbutton = (Button) findViewById(R.id.vakkenbutton);
+
+
+
 
         vakkenlijstbutton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -69,7 +82,9 @@ public class MainActivity extends AppCompatActivity {
         vakkenbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, VakkenlijstActivity.class));
+//                showDialog();
+                startActivity(new Intent(MainActivity.this,PopSpinner.class));
+                //startActivity(new Intent(MainActivity.this, VakkenlijstActivity.class));
             }
         });
     }
@@ -79,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            // Maak een dialoog voor tijdens het wachten
+            // Maak een dialoog voor tijdens het wachten (User Feedback)
             pd = new ProgressDialog(MainActivity.this);
             pd.setMessage("Please wait");
             pd.setCancelable(false);
@@ -93,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             // Stuur een request naar de url, en wacht op antwoord
             String jsonStr = sh.makeServiceCall(url);
 
-//            Log.e(TAG, "Response from url: " + jsonStr);
+            Log.e(TAG, "Response from url: " + jsonStr);
             // Als de json string nog niet binnengehaald is
             if (jsonStr != null) {
                 //  Maak een JSONObject aan waarmee de string ontleed kan worden
@@ -107,31 +122,21 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     if (reader != null) {
                         jaar1 = reader.getJSONArray("jaar1");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    if (reader != null) {
                         jaar2 = reader.getJSONArray("jaar2");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    if (reader != null) {
                         jaar3en4 = reader.getJSONArray("jaar3en4");
+                        keuze = reader.getJSONArray("keuze");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
                 // Voeg de JSON string toe aan de database mbh de addFromJson functie
-                //
                 try {
                     dbAdapter.openDB();
                     dbAdapter.addFromJson(jaar1, Jaar1);
                     dbAdapter.addFromJson(jaar2, Jaar2);
                     dbAdapter.addFromJson(jaar3en4, Jaar3en4);
+                    dbAdapter.addFromJson(keuze, Keuze);
                     dbAdapter.closeDB();
 
                 } catch(NullPointerException e){
@@ -158,15 +163,44 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     text = "Ophalen vakkenlijst mislukt";
                 }
-                Context context = getApplicationContext();
-                // Maak een Toast voor de UX
-                int duration = Toast.LENGTH_SHORT;
 
+                // Maak een Toast voor de User Experience
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
 
             }
         }
 
+    }
+
+    private void showDialog(){
+        final Dialog d = new Dialog(MainActivity.this);
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        d.setContentView(R.layout.choosetablewindow);
+        String[] arraySpinner = new String[]{
+                "Jaar 1", "Jaar 2", "Jaar 3 en 4", "Keuzevakken"};
+        final Spinner s = (Spinner) findViewById(R.id.tableSpinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, arraySpinner);
+        s.setAdapter(adapter);
+
+
+        final Button acceptButton = (Button) findViewById(R.id.tableButton);
+        final Button cancelButton = (Button) findViewById(R.id.cancelButton1);
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item = s.getSelectedItem().toString();
+                startActivity(new Intent(MainActivity.this, VakkenlijstActivity.class));
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
     }
 }

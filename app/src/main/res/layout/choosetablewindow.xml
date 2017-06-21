@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:elevation="24dp"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/tvTablechooser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="@string/kieseencategorie"
+        android:textColor="@android:color/black"
+        android:textSize="20sp" />
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/tableSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tvTablechooser"
+        android:layout_marginTop="36dp"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        app:backgroundTint="@color/colorPrimary"/>
+
+    <Button
+        android:id="@+id/tableButton"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginTop="47dp"
+        android:minWidth="64dp"
+        android:padding="8dp"
+        android:text="@string/bevestig"
+        android:layout_below="@+id/tableSpinner"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/cancelButton1"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_alignTop="@+id/tableButton"
+        android:layout_marginEnd="17dp"
+        android:layout_marginRight="17dp"
+        android:layout_toLeftOf="@+id/tableButton"
+        android:layout_toStartOf="@+id/tableButton"
+        android:minWidth="64dp"
+        android:padding="8dp"
+        android:text="@string/annuleer" />
+</RelativeLayout>
