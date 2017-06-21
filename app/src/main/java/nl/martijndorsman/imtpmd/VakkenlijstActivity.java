@@ -68,15 +68,18 @@ public class VakkenlijstActivity extends AppCompatActivity {
             String ects = c.getString(1);
             String period = c.getString(2);
             String grade = c.getString(3);
-            CourseModel p = new CourseModel(name, ects, period, grade);
+            String status = "Niet behaald";
+            Double gradeDouble = Double.parseDouble(grade);
+            if (gradeDouble>=5.5){
+                status = "Behaald";
+            }
+            CourseModel p = new CourseModel(name, ects, period, grade, status);
             //VOEG TOE AAN ARRAYLIST
             courses.add(p);
         }
-        adapter.notifyDataSetChanged();
         //CHECK OF DE ARRAYLIST LEEG IS
         if (!(courses.size() < 1)) {
             rv.setAdapter(adapter);
-
         }
         c.close();
         dbAdapter.closeDB();

@@ -4,61 +4,25 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v7.widget.LinearLayoutCompat
-        android:id="@+id/linearLayoutCompat"
+    <TextView
+        android:id="@+id/tvVoortgang"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
-
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_weight=".30"
-            android:gravity="center"
-            android:text="@string/name" />
-
-        <TextView
-            android:id="@+id/tvEcts"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_weight=".10"
-            android:gravity="center"
-            android:text="@string/ects" />
-
-        <TextView
-            android:id="@+id/tvPeriod"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_weight=".20"
-            android:gravity="center"
-            android:text="@string/period" />
-
-        <TextView
-            android:id="@+id/tvGrade"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_weight=".20"
-            android:gravity="center"
-            android:text="@string/grade" />
-
-    </android.support.v7.widget.LinearLayoutCompat>
+        android:text="@string/voortgang"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center"
+        android:textSize="36sp"
+        android:layout_marginBottom="5dp"
+        />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/linearLayoutCompat"
-        android:layout_marginTop="13dp"
-        android:background="@android:color/white"/>
+        android:background="@android:color/white"
+        android:layout_below="@+id/tvVoortgang"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

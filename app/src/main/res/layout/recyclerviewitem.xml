@@ -1,52 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
     <TextView
         android:id="@+id/nametxt"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_weight=".30"
-        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:paddingLeft="10dp"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="sans-serif-medium"
         android:text="@string/name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/ectstxt"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_weight=".10"
-        android:gravity="center"
-        android:text="@string/ects" />
 
-    <TextView
-        android:id="@+id/periodtxt"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_weight=".20"
-        android:gravity="center"
-        android:text="@string/period" />
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearlayoutcontainer"
+        android:orientation="horizontal"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/nametxt">
 
-        <TextView
-            android:id="@+id/gradetxt"
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/linearlayoutkeys"
             android:layout_width="0dp"
-            android:layout_weight=".20"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ectstxtkey"
+                android:textColor="@color/defaultgray"
+                android:text="@string/ects"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/periodtxtkey"
+                android:textColor="@color/defaultgray"
+                android:text="@string/period"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/gradetxtkey"
+                android:textColor="@color/defaultgray"
+                android:text="@string/grade"
+                android:fontFamily="sans-serif-medium"/>
+
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/linearlayoutvalues"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/grade"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:id="@+id/ectstxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/ects"
+                android:layout_gravity="end"
+                android:textColor="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/periodtxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/period"
+                android:layout_gravity="end"
+                android:textColor="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/gradetxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/grade"
+                android:fontFamily="sans-serif-medium"
+                android:layout_gravity="end"
+                android:textColor="@color/colorPrimary"/>
+
+
+        </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.LinearLayoutCompat>
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linearlayoutcontainer"
+        android:layout_marginTop="5dp">
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/behaaldtxt"
+        android:text="@string/status"
+        android:textColor="@color/defaultgray"
+        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/behaaldresulttxt"
+            android:text="@string/nietbehaald"
+            android:textColor="@color/nietbehaald"
+            android:gravity="end"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_alignParentTop="true"
-            android:gravity="center"
             />
     </android.support.v7.widget.LinearLayoutCompat>
-    </RelativeLayout>
+</RelativeLayout>

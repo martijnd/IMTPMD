@@ -13,6 +13,9 @@
     <string name="cijferaanpassen">Cijfer aanpassen</string>
     <string name="annuleer">Annuleer</string>
     <string name="kieseencategorie">Kies een categorie</string>
+    <string name="voortgang">Voortgang</string>
+    <string name="nietbehaald">Niet behaald</string>
+    <string name="status">Status</string>
 
     <array name="table_arrays">
         <item>Jaar 1</item>

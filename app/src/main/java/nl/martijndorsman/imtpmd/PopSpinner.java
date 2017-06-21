@@ -31,9 +31,8 @@ public class PopSpinner extends Activity{
 
         //Het formaat van de window instellen
         int width = dm.widthPixels;
-        int heigth = dm.heightPixels;
 
-        getWindow().setLayout((int)(width*.8),(int)(heigth*.4));
+        getWindow().setLayout((int)(width*.8),WindowManager.LayoutParams.WRAP_CONTENT);
         WindowManager.LayoutParams windowManager = getWindow().getAttributes();
         windowManager.dimAmount = 0.75f;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
