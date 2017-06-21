@@ -1,5 +1,6 @@
 package nl.martijndorsman.imtpmd;
 
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -54,6 +55,7 @@ public class VakkenlijstActivity extends AppCompatActivity {
         tableSwitch();
         adapter.notifyDataSetChanged();
     }
+
 
     // Retrieve en bind het aan de recyclerview
     public void retrieve(String tabel, Context context) {
