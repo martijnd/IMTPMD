@@ -19,6 +19,7 @@ import android.util.Log;
 
 public class PopSpinner extends Activity{
     public static String item;
+    public boolean keuzeVakkenIngesteld = false;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +52,21 @@ public class PopSpinner extends Activity{
                 // Code here executes on main thread after user presses button
                 item = s.getSelectedItem().toString();
                 Log.w("PopMessage", "Value of Item: " +  item);
-                startActivity(new Intent(PopSpinner.this, VakkenlijstActivity.class));
+                if(!item.equals("Keuzevakken")) {
+                    startActivity(new Intent(PopSpinner.this, VakkenlijstActivity.class));
+                    Log.w("PopMessage", "Value of boolean: " + keuzeVakkenIngesteld);
+                }
+                else{
+                    if(!keuzeVakkenIngesteld) {
+                        Log.w("PopMessage", "Value of boolean: " + keuzeVakkenIngesteld);
+                        keuzeVakkenIngesteld = true;
+                        Log.w("PopMessage", "Value of Item: " + item);
+                        Log.w("PopMessage", "Value of boolean: " + keuzeVakkenIngesteld);
+                        startActivity(new Intent(PopSpinner.this, KeuzevakPopup.class));
+                    } else {
+                        startActivity((new Intent(PopSpinner.this, VakkenlijstActivity.class)));
+                    }
+                }
             }
         });
         final Button cancelbutton = (Button) findViewById(R.id.cancelButton1);

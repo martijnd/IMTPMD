@@ -22,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import nl.martijndorsman.imtpmd.database.DatabaseAdapter;
@@ -70,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
         vakkenlijstbutton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                if(!check) {
+                if(!doesDatabaseExist(getApplicationContext(), "vakkenlijst.db")) {
+
                     new JsonTask().execute(url);
                 }
                 else {
@@ -82,9 +84,7 @@ public class MainActivity extends AppCompatActivity {
         vakkenbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                showDialog();
                 startActivity(new Intent(MainActivity.this,PopSpinner.class));
-                //startActivity(new Intent(MainActivity.this, VakkenlijstActivity.class));
             }
         });
     }
@@ -175,32 +175,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void showDialog(){
-        final Dialog d = new Dialog(MainActivity.this);
-        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        d.setContentView(R.layout.choosetablewindow);
-        String[] arraySpinner = new String[]{
-                "Jaar 1", "Jaar 2", "Jaar 3 en 4", "Keuzevakken"};
-        final Spinner s = (Spinner) findViewById(R.id.tableSpinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, arraySpinner);
-        s.setAdapter(adapter);
-
-
-        final Button acceptButton = (Button) findViewById(R.id.tableButton);
-        final Button cancelButton = (Button) findViewById(R.id.cancelButton1);
-        acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                item = s.getSelectedItem().toString();
-                startActivity(new Intent(MainActivity.this, VakkenlijstActivity.class));
-            }
-        });
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                d.dismiss();
-            }
-        });
+    // Check of de database bestaat
+    private static boolean doesDatabaseExist(Context context, String dbName) {
+        File dbFile = context.getDatabasePath(dbName);
+        return dbFile.exists();
     }
 }

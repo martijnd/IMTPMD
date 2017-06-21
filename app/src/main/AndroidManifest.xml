@@ -20,6 +20,9 @@
         <activity android:name=".VakkenlijstActivity">
         </activity>
         <activity android:name=".PopSpinner"
+        android:theme= "@style/AppTheme.PopTheme">
+    </activity>
+        <activity android:name=".KeuzevakPopup"
             android:theme= "@style/AppTheme.PopTheme">
         </activity>
     </application>

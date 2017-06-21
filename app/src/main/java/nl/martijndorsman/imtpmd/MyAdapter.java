@@ -53,6 +53,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
         // holder
         MyHolder holder = new MyHolder(v);
         return holder;
+
     }
 
     // bind view aan de holder
@@ -74,14 +75,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
 
                 String name = courses.get(pos).getName();
                 // Voeg een invoerscherm toe
-                showDialog(holder, name, pos);
+                showDialog(name, pos);
                 Snackbar.make(v, courses.get(pos).getName(), Snackbar.LENGTH_SHORT).show();
                 notifyDataSetChanged();
             }
         });
     }
 
-    private void showDialog(final MyHolder holder, final String name, final int pos){
+    private void showDialog(final String name, final int pos){
         final String tabel = VakkenlijstActivity.currentTable;
         final DatabaseAdapter dbAdapter = new DatabaseAdapter(context);
         final Dialog d = new Dialog(context);
