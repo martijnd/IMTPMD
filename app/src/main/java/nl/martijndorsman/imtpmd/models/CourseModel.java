@@ -12,13 +12,15 @@ public class CourseModel implements Serializable {
     public String ects;
     public String period;
     public String grade;
+    public String status;
 
     //constructor
-    public CourseModel(String courseName, String ects, String period, String grade){
+    public CourseModel(String courseName, String ects, String period, String grade, String status){
         this.name = courseName;
         this.ects = ects;
         this.period = period;
         this.grade = grade;
+        this.status = status;
     }
 
     public String getName() {
@@ -51,5 +53,13 @@ public class CourseModel implements Serializable {
 
     public void setGrade(String grade) {
         this.grade = grade;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -12,6 +12,8 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.Arrays;
+
 import nl.martijndorsman.imtpmd.models.CourseModel;
 
 /**
@@ -19,14 +21,14 @@ import nl.martijndorsman.imtpmd.models.CourseModel;
  */
 
 public class DatabaseAdapter {
-    public static Context c;
-    static SQLiteDatabase db;
-    DatabaseHelper helper;
+    Context context;
+    SQLiteDatabase db;
+    public DatabaseHelper helper;
 
     // Maak een DatabaseHelper object met de context van de huidige klasse
-    public DatabaseAdapter(Context c){
-        this.c = c;
-        helper = new DatabaseHelper(c);
+    public DatabaseAdapter(Context context){
+        this.context = context;
+        helper = new DatabaseHelper(context);
     }
 
     // Open database
@@ -51,8 +53,6 @@ public class DatabaseAdapter {
     }
     // Voeg data toe aan de database aan de hand van JSONArrays
     public void addFromJson(JSONArray jsonpart, String tabel){
-        DatabaseHelper dbHelper = new DatabaseHelper(c);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
             for(int i = 0; i < jsonpart.length(); i++) {
                 ContentValues values = new ContentValues();
@@ -70,64 +70,17 @@ public class DatabaseAdapter {
             e.printStackTrace();
         }
     }
-        // TODO: Fix onderstaande functie zodat hij het cijfer goed update
 
-    public long update(String tabel, String name, String ects, String period, String nieuwCijfer) {
-        DatabaseHelper dbHelper = new DatabaseHelper(c);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+    public long update(String tabel, String name, String nieuwCijfer) {
         //Nieuwe waarde voor een kolom
         ContentValues values = new ContentValues();
         Log.w("DB Values", values.toString());
         values.put(DatabaseInfo.CourseColumn.GRADE, nieuwCijfer);
-        String selection = DatabaseInfo.CourseColumn.NAME + " LIKE " + name;
-        String[] selectionArgs = { name };
-        return db.update(tabel, values, "NAME LIKE '" + name + "'", null);
-
+        String selection = DatabaseInfo.CourseColumn.NAME + " = ?";
+        String[] selectionArgs = new String[]{ name };
+        return db.update(tabel, values, selection, selectionArgs);
     }
 
-    public static String tableToString(String tableName) {
-        DatabaseAdapter dbAdapter = new DatabaseAdapter(c);
-        dbAdapter.openDB();
-        Log.d("","tableToString called");
-        String tableString = String.format("Table %s:\n", tableName);
-        Cursor allRows  = db.rawQuery("SELECT * FROM " + tableName, null);
-        tableString += cursorToString(allRows);
-        return tableString;
-    }
-
-    public static String cursorToString(Cursor cursor){
-        String cursorString = "";
-        if (cursor.moveToFirst() ){
-            String[] columnNames = cursor.getColumnNames();
-            for (String name: columnNames)
-                cursorString += String.format("%s ][ ", name);
-            cursorString += "\n";
-            do {
-                for (String name: columnNames) {
-                    cursorString += String.format("%s ][ ",
-                            cursor.getString(cursor.getColumnIndex(name)));
-                }
-                cursorString += "\n";
-            } while (cursor.moveToNext());
-        }
-        return cursorString;
-    }
-
-
-    // insert into database
-//    public long add(String tabel, String name, String ects, String period, String grade){
-//        try {
-//                ContentValues cv = new ContentValues();
-//                cv.put(DatabaseInfo.CourseColumn.NAME, name);
-//                cv.put(DatabaseInfo.CourseColumn.ECTS, ects);
-//                cv.put(DatabaseInfo.CourseColumn.PERIOD, period);
-//                cv.put(DatabaseInfo.CourseColumn.GRADE, grade);
-//                return db.insert(tabel, null, cv);
-//        } catch(SQLException e){
-//            e.printStackTrace();
-//        }
-//        return 0;
-//    }
     // Haal een hele tabel op
     public Cursor getAllData(String tabel){
         String[] columns = { DatabaseInfo.CourseColumn.NAME,DatabaseInfo.CourseColumn.ECTS,DatabaseInfo.CourseColumn.PERIOD, DatabaseInfo.CourseColumn.GRADE};

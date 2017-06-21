@@ -13,7 +13,7 @@ import nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final int dbVersion = 6;
+    private static final int dbVersion = 1;
 
     // database naam
     private static final String dbName = "vakkenlijst.db";
@@ -77,9 +77,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+ CourseTables.Keuze);
         onCreate(db);
     }
-
-    public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version ){
-        super(context,name,factory, version);
-    }
-
 }
