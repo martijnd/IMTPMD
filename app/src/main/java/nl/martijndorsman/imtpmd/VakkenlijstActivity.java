@@ -2,14 +2,17 @@ package nl.martijndorsman.imtpmd;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -19,6 +22,10 @@ import nl.martijndorsman.imtpmd.database.DatabaseAdapter;
 import nl.martijndorsman.imtpmd.database.DatabaseHelper;
 import nl.martijndorsman.imtpmd.models.CourseModel;
 
+import static nl.martijndorsman.imtpmd.KeuzevakPopup.item1;
+import static nl.martijndorsman.imtpmd.KeuzevakPopup.item2;
+import static nl.martijndorsman.imtpmd.KeuzevakPopup.item3;
+import static nl.martijndorsman.imtpmd.KeuzevakPopup.item4;
 import static nl.martijndorsman.imtpmd.PopSpinner.item;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar1;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar2;
@@ -37,7 +44,7 @@ public class VakkenlijstActivity extends AppCompatActivity {
     public DatabaseHelper helper;
     DatabaseAdapter dbAdapter;
     public ArrayList<CourseModel> courses = new ArrayList<>();
-
+    LinearLayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +54,12 @@ public class VakkenlijstActivity extends AppCompatActivity {
         // maak een JsonTask Object aan en voer hem uit met de url
         rv = (RecyclerView) findViewById(R.id.mRecycler);
         rv.setLayoutManager(new LinearLayoutManager(this));
+        mLayoutManager = new LinearLayoutManager(this);
         rv.setItemAnimator(new DefaultItemAnimator());
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rv.getContext(),
+                mLayoutManager.getOrientation());
+        rv.addItemDecoration(dividerItemDecoration);
         helper = new DatabaseHelper(this);
         // adapter
         adapter = new MyAdapter(this, courses);
@@ -87,6 +99,37 @@ public class VakkenlijstActivity extends AppCompatActivity {
         dbAdapter.closeDB();
     }
 
+    public void retrieveSubject(String tabel, Context context) {
+        dbAdapter = new DatabaseAdapter(context);
+        dbAdapter.openDB();
+        courses.clear();
+        Log.d("KAAS ", item2);
+        Cursor c = dbAdapter.getAllData(tabel);
+        //LOOP EN VOEG AAN ARRAYLIST TOE
+        while (c.moveToNext()) {
+            String name = c.getString(0);
+            String ects = c.getString(1);
+            String period = c.getString(2);
+            String grade = c.getString(3);
+            String status = "Niet behaald";
+            Double gradeDouble = Double.parseDouble(grade);
+            if (gradeDouble>=5.5){
+                status = "Behaald";
+            }
+            if(name.equals(item1) || name.equals(item2) || name.equals(item3) || name.equals(item4)) {
+                CourseModel p = new CourseModel(name, ects, period, grade, status);
+                //VOEG TOE AAN ARRAYLIST
+                courses.add(p);
+            }
+        }
+        //CHECK OF DE ARRAYLIST LEEG IS
+        if (!(courses.size() < 1)) {
+            rv.setAdapter(adapter);
+        }
+        c.close();
+        dbAdapter.closeDB();
+    }
+
     private void tableSwitch (){
         switch (item){
             case "Jaar 1":
@@ -99,7 +142,8 @@ public class VakkenlijstActivity extends AppCompatActivity {
             case "Jaar 3 en 4": retrieve(Jaar3en4, this);
                 currentTable = "Jaar3en4";
                 break;
-            case "Keuzevakken": retrieve(Keuze, this);
+            // Wanneer keuzevakken geselecteerd wordt, show een dialog om te keuzevakken te selecteren
+            case "Keuzevakken": retrieveSubject(Keuze, this);
                 currentTable = "Keuze";
                 break;
         }

@@ -2,11 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="20dp">
     <TextView
         android:id="@+id/nametxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="start"
         android:paddingLeft="10dp"
         android:textColor="@color/colorPrimary"
@@ -56,6 +57,7 @@
 
         </android.support.v7.widget.LinearLayoutCompat>
 
+
         <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/linearlayoutvalues"
             android:layout_width="0dp"
@@ -94,13 +96,20 @@
                 android:textColor="@color/colorPrimary"/>
 
 
+
         </android.support.v7.widget.LinearLayoutCompat>
+
     </android.support.v7.widget.LinearLayoutCompat>
+
+
+
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/linearlayoutcontainer"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp">
+
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -125,4 +134,6 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             />
     </android.support.v7.widget.LinearLayoutCompat>
+
+
 </RelativeLayout>

@@ -16,6 +16,7 @@
     <string name="voortgang">Voortgang</string>
     <string name="nietbehaald">Niet behaald</string>
     <string name="status">Status</string>
+    <string name="kiesjekeuzevakken">Kies je keuzevakken</string>
 
     <array name="table_arrays">
         <item>Jaar 1</item>
