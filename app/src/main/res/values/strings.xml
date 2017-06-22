@@ -4,7 +4,7 @@
     <string name="vakkenlijstbutton">Vakkenlijst ophalen</string>
     <string name="vakkenbekijken">Vakken bekijken</string>
     <string name="voortgangbekijken">Voortgang bekijken</string>
-    <string name="gemaaktdoor">Gemaakt door Robert Potjes en Martijn Dorsman</string>
+    <string name="gemaaktdoor">Gemaakt door Robert Potjes en \nMartijn Dorsman</string>
     <string name="name">Vak</string>
     <string name="ects">ECTS</string>
     <string name="period">Periode</string>

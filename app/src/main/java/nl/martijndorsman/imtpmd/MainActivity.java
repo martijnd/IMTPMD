@@ -5,11 +5,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.view.MotionEventCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -38,7 +41,7 @@ import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Keuze;
  */
 
 public class MainActivity extends AppCompatActivity {
-    public static String item;
+    private SwipeRefreshLayout swipeContainer;
     ProgressDialog pd;
     boolean check = false;
     DatabaseAdapter dbAdapter = new DatabaseAdapter(this);
@@ -64,18 +67,25 @@ public class MainActivity extends AppCompatActivity {
         // Bind de button aan de onClickListener met de startActivity methode
         Button vakkenlijstbutton = (Button) findViewById(R.id.vakkenlijstbutton);
         Button vakkenbutton = (Button) findViewById(R.id.vakkenbutton);
-        Button voortgangbutton = (Button) findViewById(R.id.voortgangbutton);
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getJSON();
+
+            }
+        });
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+
 
         vakkenlijstbutton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                if(!doesDatabaseExist(getApplicationContext(), "vakkenlijst.db")) {
-
-                    new JsonTask().execute(url);
-                }
-                else {
-                    Toast.makeText(MainActivity.this, "Vakkenlijst is al opgehaald", Toast.LENGTH_SHORT).show();
-                }
+                getJSON();
             }
         });
 
@@ -83,13 +93,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,PopSpinner.class));
-            }
-        });
-
-        voortgangbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,Voortgang.class));
             }
         });
     }
@@ -184,5 +187,17 @@ public class MainActivity extends AppCompatActivity {
     private static boolean doesDatabaseExist(Context context, String dbName) {
         File dbFile = context.getDatabasePath(dbName);
         return dbFile.exists();
+    }
+
+    private void getJSON(){
+        if(!doesDatabaseExist(getApplicationContext(), "vakkenlijst.db")) {
+
+            new JsonTask().execute(url);
+            swipeContainer.setRefreshing(false);
+        }
+        else {
+            Toast.makeText(MainActivity.this, "Vakkenlijst is al opgehaald", Toast.LENGTH_SHORT).show();
+            swipeContainer.setRefreshing(false);
+        }
     }
 }
