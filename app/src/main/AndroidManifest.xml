@@ -25,6 +25,7 @@
         <activity android:name=".KeuzevakPopup"
             android:theme= "@style/AppTheme.PopTheme">
         </activity>
+        <activity android:name=".Voortgang"></activity>
     </application>
 
 </manifest>
