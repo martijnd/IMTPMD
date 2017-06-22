@@ -1,5 +1,6 @@
 package nl.martijndorsman.imtpmd;
 
+
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -66,6 +67,7 @@ public class VakkenlijstActivity extends AppCompatActivity {
         totaalBehaaldeECTS(currentTable);
         adapter.notifyDataSetChanged();
     }
+
 
     // Retrieve en bind het aan de recyclerview
     public void retrieve(String tabel, Context context) {
