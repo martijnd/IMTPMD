@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -17,7 +18,8 @@ import android.widget.Spinner;
 
 public class PopVoortgang extends Activity {
 
-    public String item;
+    public static String item;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +65,11 @@ public class PopVoortgang extends Activity {
             }
         });
 
+    }
 
+    public String getItem(){
+        Log.w("Item ", item);
+        return item;
     }
 
 }

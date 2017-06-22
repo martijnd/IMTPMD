@@ -20,9 +20,10 @@ public class Voortgang extends Activity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.voortgang);
-        String keuze = item;
+        PopVoortgang popvoortgang = new PopVoortgang();
+        String keuze = popvoortgang.getItem();
         ECTS ects = new ECTS(getApplicationContext());
-        switch (item){
+        switch (keuze){
             case "Jaar 1":
                 aantalects = ects.getECTS("Jaar1");
                 break;
