@@ -1,29 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:orientation="vertical">
 
 
-    <ProgressBar
-        android:indeterminate="false"
-        android:max="60"
-        android:progress="30"
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="50dp"
-        android:layout_weight="0.38" />
 
     <TextView
-        android:id="@+id/voortgang_ects"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.38"
-        android:text="Aantal etc" />
+        android:id="@+id/tvVoortgangTitel"
+        android:text="@string/voortgang"
+        android:textAlignment="center"
+        android:textColor="@color/colorButton"
+        android:textSize="40sp"
+        android:layout_marginBottom="5dp"
+        />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tvJaar1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/jaar1"
+            android:textAlignment="center"
+            android:textColor="@color/colorButton"
+            android:textSize="20sp" />
+
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+            </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tvJaar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="@string/jaar2"
+            android:textAlignment="center"
+            android:textColor="@color/colorButton"
+            android:textSize="20sp" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+             />
+    </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tvJaar3en4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/jaar3en4"
+                android:textAlignment="center"
+                android:textColor="@color/colorButton"
+                android:textSize="20sp" />
+
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/chart3en4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/keuze"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="@string/keuze"
+                android:textAlignment="center"
+                android:textColor="@color/colorButton"
+                android:textSize="20sp" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/chartKeuze"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
 
 
