@@ -13,7 +13,7 @@ import nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final int dbVersion = 1;
+    private static final int dbVersion = 2;
 
     // database naam
     private static final String dbName = "vakkenlijst.db";

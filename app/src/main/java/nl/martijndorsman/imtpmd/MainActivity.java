@@ -50,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
     public JSONArray jaar3en4;
     public JSONArray keuze;
 
-    MyAdapter adapter;
-    public SpinnerAdapter spinnerAdapter;
-    RecyclerView rv;
     private String TAG = MainActivity.class.getSimpleName();
     private boolean success = true;
     CharSequence text;
@@ -73,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 getJSON();
-
             }
         });
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
@@ -157,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
 
                 } catch(NullPointerException e){
                     e.printStackTrace();
-                    Log.d("String ", "succes32434234243");
                 }
             } else {
                 Log.d(TAG, "Couldn't get json from server.");
