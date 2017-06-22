@@ -15,14 +15,24 @@
         android:layout_marginBottom="5dp"
         />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvVlActivityInstructions"
+        android:text="@string/vlActivityInstructions"
+        android:layout_below="@+id/tvVoortgang"
+        android:gravity="center"
+        android:layout_marginBottom="5dp"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
-        android:layout_below="@+id/tvVoortgang"
+        android:layout_below="@id/tvVlActivityInstructions"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        />
 
 
 </RelativeLayout>

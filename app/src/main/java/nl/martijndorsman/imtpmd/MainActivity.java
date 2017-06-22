@@ -1,24 +1,15 @@
 package nl.martijndorsman.imtpmd;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -26,10 +17,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import nl.martijndorsman.imtpmd.database.DatabaseAdapter;
-import nl.martijndorsman.imtpmd.models.CourseModel;
 
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar1;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Jaar2;
@@ -50,9 +39,6 @@ public class MainActivity extends AppCompatActivity {
     public JSONArray jaar3en4;
     public JSONArray keuze;
 
-    MyAdapter adapter;
-    public SpinnerAdapter spinnerAdapter;
-    RecyclerView rv;
     private String TAG = MainActivity.class.getSimpleName();
     private boolean success = true;
     CharSequence text;
@@ -72,15 +58,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 getJSON();
-
             }
         });
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-
-
 
         vakkenlijstbutton.setOnClickListener(new View.OnClickListener(){
             @Override

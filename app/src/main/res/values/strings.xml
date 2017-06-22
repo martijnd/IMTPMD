@@ -17,6 +17,8 @@
     <string name="nietbehaald">Niet behaald</string>
     <string name="status">Status</string>
     <string name="kiesjekeuzevakken">Kies je keuzevakken</string>
+    <string name="vlActivityInstructions">Druk op een vak om het cijfer aan te passen</string>
+    <string name="mActivityInstructions">Sleep omlaag of druk op \'Vakkenlijst ophalen\' om de gegevens in te laden</string>
 
     <array name="table_arrays">
         <item>Jaar 1</item>
