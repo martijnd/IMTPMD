@@ -29,7 +29,7 @@ public class ECTS {
         this.context = context;
     }
 
-    public int getETCS(String tabel){
+    public int getECTS(String tabel){
         retrieve(tabel, context);
         return totaalBehaaldeECTS(tabel);
     }

@@ -18,8 +18,8 @@ public class Voortgang extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.voortgang);
-        ETCS etcs = new ETCS(context);
-        int test = etcs.getETCS("Jaar1");
+        ECTS etcs = new ECTS(getApplicationContext());
+        int test = etcs.getECTS("Jaar1");
 
     }
 
