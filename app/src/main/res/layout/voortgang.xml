@@ -7,15 +7,13 @@
 
 
     <ProgressBar
-        android:indeterminate="false"
-        android:max="60"
-        android:progress="30"
-        android:id="@+id/progressBar"
+        android:id="@+id/voortgangProgressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="50dp"
-        android:layout_weight="0.38" />
+        android:layout_weight="0.38"
+        android:indeterminate="false" />
 
     <TextView
         android:id="@+id/voortgang_ects"

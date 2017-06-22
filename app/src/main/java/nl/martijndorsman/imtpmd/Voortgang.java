@@ -1,27 +1,47 @@
 package nl.martijndorsman.imtpmd;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
+import android.widget.ProgressBar;
+import static nl.martijndorsman.imtpmd.PopSpinner.item;
+
 
 /**
  * Created by Martijn on 15/06/17.
  */
 
 // Klasse waarin de grafieken komen
-public class Voortgang extends AppCompatActivity{
+public class Voortgang extends Activity{
     Context context;
-
+    int aantalects;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.voortgang);
-        ETCS etcs = new ETCS(context);
-        int test = etcs.getETCS("Jaar1");
+        String keuze = item;
+        ECTS ects = new ECTS(getApplicationContext());
+        switch (item){
+            case "Jaar 1":
+                aantalects = ects.getECTS("Jaar1");
+                break;
+            case "Jaar 2":
+                aantalects = ects.getECTS("Jaar2");
+                break;
+            case "Jaar 3 en 4":
+                aantalects = ects.getECTS("Jaar3en4");
+                break;
+            case "Keuzevakken":
+                aantalects = ects.getECTS("Keuze");
+                break;
+        }
 
+        ProgressBar progresbarECTS = (ProgressBar) findViewById(R.id.voortgangProgressBar);
+        progresbarECTS.setMax(60);
+        progresbarECTS.setProgress(aantalects);
     }
+
 
 
 

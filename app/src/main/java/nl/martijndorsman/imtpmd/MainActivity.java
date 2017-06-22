@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         voortgangbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,Voortgang.class));
+                startActivity(new Intent(MainActivity.this,PopVoortgang.class));
             }
         });
     }

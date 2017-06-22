@@ -29,7 +29,7 @@ public class ECTS {
         this.context = context;
     }
 
-    public int getETCS(String tabel){
+    public int getECTS(String tabel){
         retrieve(tabel, context);
         return totaalBehaaldeECTS(tabel);
     }
@@ -75,7 +75,7 @@ public class ECTS {
                     }
                 }
                 etcs = totaalECTSjaar1;
-            break;
+                break;
             case "Jaar2":
                 totaalECTSjaar2 = 0;
                 for (int i = 0; i < courses.size(); i++) {
@@ -86,7 +86,7 @@ public class ECTS {
                     }
                 }
                 etcs =  totaalECTSjaar2;
-            break;
+                break;
             case "Jaar3en4":
                 totaalECTSjaar3en4 = 0;
                 for (int i = 0; i < courses.size(); i++) {
@@ -98,7 +98,7 @@ public class ECTS {
                 }
                 ;
                 etcs =  totaalECTSjaar3en4;
-            break;
+                break;
             case "Keuze":
                 totaalECTSKeuze = 0;
                 for (int i = 0; i < courses.size(); i++) {
@@ -109,7 +109,7 @@ public class ECTS {
                     }
                 }
                 etcs =  totaalECTSKeuze;
-            break;
+                break;
         }
         return etcs;
     }

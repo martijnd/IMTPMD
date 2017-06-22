@@ -26,6 +26,11 @@
             android:theme= "@style/AppTheme.PopTheme">
         </activity>
         <activity android:name=".Voortgang"></activity>
+
+        <activity android:name=".PopVoortgang"
+            android:theme= "@style/AppTheme.PopTheme">
+        </activity>
+
     </application>
 
 </manifest>
