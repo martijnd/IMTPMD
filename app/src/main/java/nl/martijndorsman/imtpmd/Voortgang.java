@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 // Klasse waarin de grafieken komen
 public class Voortgang extends AppCompatActivity{
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
