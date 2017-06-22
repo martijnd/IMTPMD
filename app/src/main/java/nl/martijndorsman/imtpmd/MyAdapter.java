@@ -2,8 +2,6 @@ package nl.martijndorsman.imtpmd;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +20,12 @@ import java.util.ArrayList;
 
 import nl.martijndorsman.imtpmd.database.DatabaseAdapter;
 import nl.martijndorsman.imtpmd.models.CourseModel;
+
+import static nl.martijndorsman.imtpmd.VakkenlijstActivity.currentTable;
+import static nl.martijndorsman.imtpmd.VakkenlijstActivity.totaalECTSjaar1;
+import static nl.martijndorsman.imtpmd.VakkenlijstActivity.totaalECTSjaar2;
+import static nl.martijndorsman.imtpmd.VakkenlijstActivity.totaalECTSjaar3en4;
+import static nl.martijndorsman.imtpmd.VakkenlijstActivity.totaalECTSKeuze;
 
 /**
  * Created by Martijn on 16/06/17.
@@ -47,7 +51,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
         // view object
         // Stel de view in met de LayoutInflater en de contxt. Vervolgens inflate de items van de recyclerview
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerviewitem, null);
-
         // holder
         MyHolder holder = new MyHolder(v);
         return holder;
@@ -58,13 +61,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
     @Override
     public void onBindViewHolder(final MyHolder holder, int position) {
         holder.nametxt.setText(courses.get(position).getName());
-        holder.ectstxt.setText((courses.get(position).getEcts()));
-        holder.periodtxt.setText((courses.get(position).getPeriod()));
-        holder.gradetxt.setText((courses.get(position).getGrade()));
-        holder.statustxt.setText((courses.get(position).getStatus()));
+        holder.ectstxt.setText(courses.get(position).getEcts());
+        holder.periodtxt.setText(courses.get(position).getPeriod());
+        holder.gradetxt.setText(courses.get(position).getGrade());
+        holder.statustxt.setText(courses.get(position).getStatus());
         if(holder.statustxt.getText() == "Behaald"){
             holder.statustxt.setTextColor(ContextCompat.getColor(context, R.color.behaald));
+        }   else {
+            holder.statustxt.setTextColor(ContextCompat.getColor(context, R.color.nietbehaald));
         }
+
+
 
         // clicked action
         holder.setItemClickListener(new ItemClickListener() {
@@ -74,24 +81,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
                 String name = courses.get(pos).getName();
                 // Voeg een invoerscherm toe
                 showDialog(name, pos);
+                // Toon een Snackbar met het huidige ingedrukte cijfer (UX design)
                 Snackbar.make(v, courses.get(pos).getName(), Snackbar.LENGTH_SHORT).show();
+                // Vertel de adapter dat de huidige dataset is aangepast, en de View dus geupdate moet worden
                 notifyDataSetChanged();
             }
         });
     }
-
-
+    // Functie om het cijfer invoerscherm te tonen
     private void showDialog(final String name, final int pos){
-        final String tabel = VakkenlijstActivity.currentTable;
+        final String tabel = currentTable;
         final DatabaseAdapter dbAdapter = new DatabaseAdapter(context);
         final Dialog d = new Dialog(context);
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Log.d("Test", "Geklikt op item");
         d.setContentView(R.layout.gradeeditwindow);
         gradetxt = (EditText) d.findViewById(R.id.etGradeEdit);
         gradeButton = (Button) d.findViewById(R.id.gradeButton);
         cancelButton = (Button) d.findViewById(R.id.cancelButton);
         statustxt = (TextView) d.findViewById(R.id.behaaldresulttxt);
-//      Keyboard pop up
+//      Keyboard pop up wanneer het dialoog tevoorschijn komt (UX design)
         gradetxt.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View view, boolean focused)
@@ -102,33 +111,44 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
                 }
             }
         });
-
+        // OnClicklistener voor de accepteerbutton in het dialog
         gradeButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                //vraag de waarde van de EditText op
                 newGrade = gradetxt.getText().toString();
+                // Controleer of de EditText niet leeg is
                 if(!newGrade.equals("")) {
                     Double newGradeDouble = Double.parseDouble(newGrade);
+                    // Controleer of het ingevoerde cijfer tussen de 1 en 10 ligt
                     if (newGradeDouble <= 10 && newGradeDouble > 0) {
+                        // Open de database en update de database met het nieuwe cijfer
                         dbAdapter.openDB();
                         dbAdapter.update(tabel, name, newGrade);
                         d.dismiss();
+                        // Vraag de nieuwe info op uit de database
                         vlActivity.retrieve(tabel, context);
+                        // Sluit de database weer netjes
                         dbAdapter.closeDB();
                         courses.get(pos).setGrade(newGrade);
+                        // Controleer of het cijfer een voldoende is of niet
                         if (newGradeDouble >= 5.5){
                             courses.get(pos).setStatus("Behaald");
+
                         } else {
                             courses.get(pos).setStatus("Niet behaald");
                         }
+                        // Show een Toast wanneer de input leeg is of geen legitiem cijfer is
                     } else {
                         Toast.makeText(context, "Geef een cijfer tussen de 1 en 10", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(context, "Geef een cijfer tussen de 1 en 10", Toast.LENGTH_SHORT).show();
                 }
+                totaalBehaaldeECTS(tabel);
             }
         });
+        // Maak een onClicklistener voor de annuleerknop die het dialoog weghaalt
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +163,51 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
         return courses.size();
     }
 
-    public void setStatus(Double newGradeDouble){
+    public void totaalBehaaldeECTS(String tabel){
+        switch(tabel){
+            case "Jaar1":
+                totaalECTSjaar1 = 0;
+                for (int i = 0; i < courses.size(); i++){
+                    Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
+                    int ECTSint = Integer.parseInt(courses.get(i).getEcts());
+                    if (gradeDouble >= 5.5){
+                        totaalECTSjaar1 += ECTSint;
+                    }
+                }
+                Log.d("Wordt uitgevoerd", tabel);
+                break;
+            case "Jaar2":
+                totaalECTSjaar2 = 0;
+                for (int i = 0; i < courses.size(); i++){
+                    Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
+                    int ECTSint = Integer.parseInt(courses.get(i).getEcts());
+                    if (gradeDouble >= 5.5){
+                        totaalECTSjaar2 += ECTSint;
+                    }
+                }
+                break;
+            case "Jaar3en4":
+                totaalECTSjaar3en4 = 0;
+                for (int i = 0; i < courses.size(); i++){
+                    Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
+                    int ECTSint = Integer.parseInt(courses.get(i).getEcts());
+                    if (gradeDouble >= 5.5){
+                        totaalECTSjaar3en4 += ECTSint;
+                    }
+                };
+                break;
+            case "Keuze":
+                totaalECTSKeuze = 0;
+                for (int i = 0; i < courses.size(); i++){
+                    Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
+                    int ECTSint = Integer.parseInt(courses.get(i).getEcts());
+                    if (gradeDouble >= 5.5){
+                        totaalECTSKeuze += ECTSint;
+                    }
+                }
 
+
+        }
+        Log.d(String.valueOf(totaalECTSjaar1), String.valueOf(totaalECTSjaar2));
     }
 }

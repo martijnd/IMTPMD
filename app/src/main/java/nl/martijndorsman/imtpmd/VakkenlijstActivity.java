@@ -2,21 +2,16 @@ package nl.martijndorsman.imtpmd;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import nl.martijndorsman.imtpmd.database.DatabaseAdapter;
 import nl.martijndorsman.imtpmd.database.DatabaseHelper;
@@ -45,6 +40,10 @@ public class VakkenlijstActivity extends AppCompatActivity {
     DatabaseAdapter dbAdapter;
     public ArrayList<CourseModel> courses = new ArrayList<>();
     LinearLayoutManager mLayoutManager;
+    public static int totaalECTSjaar1;
+    public static int totaalECTSjaar2;
+    public static int totaalECTSjaar3en4;
+    public static int totaalECTSKeuze;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +64,7 @@ public class VakkenlijstActivity extends AppCompatActivity {
         adapter = new MyAdapter(this, courses);
         // laad de tabel afhankelijk van de waarde van de PopSpinner
         tableSwitch();
+        totaalBehaaldeECTS(currentTable);
         adapter.notifyDataSetChanged();
     }
 
@@ -99,6 +99,7 @@ public class VakkenlijstActivity extends AppCompatActivity {
         dbAdapter.closeDB();
     }
 
+    // Retrieve functie voor de keuzevakken
     public void retrieveSubject(String tabel, Context context) {
         dbAdapter = new DatabaseAdapter(context);
         dbAdapter.openDB();
@@ -130,6 +131,7 @@ public class VakkenlijstActivity extends AppCompatActivity {
         dbAdapter.closeDB();
     }
 
+    // Functie om aan de hand van de waarde van de popSpinner de retrieve functie te laden met de juiste waardes
     private void tableSwitch (){
         switch (item){
             case "Jaar 1":
@@ -147,5 +149,54 @@ public class VakkenlijstActivity extends AppCompatActivity {
                 currentTable = "Keuze";
                 break;
         }
+    }
+
+    public void totaalBehaaldeECTS(String tabel){
+        switch(tabel){
+            case "Jaar1":
+
+                totaalECTSjaar1 = 0;
+                for (int i = 0; i < courses.size(); i++){
+                    Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
+                    int ECTSint = Integer.parseInt(courses.get(i).getEcts());
+                    if (gradeDouble >= 5.5){
+                        totaalECTSjaar1 += ECTSint;
+                    }
+                }
+                Log.d("Wordt uitgevoerd", tabel);
+                break;
+            case "Jaar2":
+                totaalECTSjaar2 = 0;
+                for (int i = 0; i < courses.size(); i++){
+                    Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
+                    int ECTSint = Integer.parseInt(courses.get(i).getEcts());
+                    if (gradeDouble >= 5.5){
+                        totaalECTSjaar2 += ECTSint;
+                    }
+                }
+                break;
+            case "Jaar3en4":
+                totaalECTSjaar3en4 = 0;
+                for (int i = 0; i < courses.size(); i++){
+                    Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
+                    int ECTSint = Integer.parseInt(courses.get(i).getEcts());
+                    if (gradeDouble >= 5.5){
+                        totaalECTSjaar3en4 += ECTSint;
+                    }
+                };
+                break;
+            case "Keuze":
+                totaalECTSKeuze = 0;
+                for (int i = 0; i < courses.size(); i++){
+                    Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
+                    int ECTSint = Integer.parseInt(courses.get(i).getEcts());
+                    if (gradeDouble >= 5.5){
+                        totaalECTSKeuze += ECTSint;
+                    }
+                }
+
+
+        }
+        Log.d(String.valueOf(totaalECTSjaar1), String.valueOf(totaalECTSjaar2));
     }
 }
