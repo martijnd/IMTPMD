@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         // Bind de button aan de onClickListener met de startActivity methode
         Button vakkenlijstbutton = (Button) findViewById(R.id.vakkenlijstbutton);
         Button vakkenbutton = (Button) findViewById(R.id.vakkenbutton);
+        Button voortgangbutton = (Button) findViewById(R.id.voortgangbutton);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -93,6 +94,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,PopSpinner.class));
+            }
+        });
+
+        voortgangbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,Voortgang.class));
             }
         });
     }
