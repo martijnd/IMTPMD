@@ -5,12 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.view.View;
-import android.widget.Spinner;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.util.Log;
+import android.widget.Button;
+import android.widget.Spinner;
 
 
 /**

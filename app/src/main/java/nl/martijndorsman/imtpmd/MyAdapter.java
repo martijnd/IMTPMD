@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +21,10 @@ import nl.martijndorsman.imtpmd.database.DatabaseAdapter;
 import nl.martijndorsman.imtpmd.models.CourseModel;
 
 import static nl.martijndorsman.imtpmd.VakkenlijstActivity.currentTable;
+import static nl.martijndorsman.imtpmd.VakkenlijstActivity.totaalECTSKeuze;
 import static nl.martijndorsman.imtpmd.VakkenlijstActivity.totaalECTSjaar1;
 import static nl.martijndorsman.imtpmd.VakkenlijstActivity.totaalECTSjaar2;
 import static nl.martijndorsman.imtpmd.VakkenlijstActivity.totaalECTSjaar3en4;
-import static nl.martijndorsman.imtpmd.VakkenlijstActivity.totaalECTSKeuze;
 
 /**
  * Created by Martijn on 16/06/17.
