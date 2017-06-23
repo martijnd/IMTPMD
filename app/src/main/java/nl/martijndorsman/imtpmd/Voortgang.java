@@ -11,11 +11,15 @@ import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 /**
@@ -58,30 +62,37 @@ public class Voortgang extends AppCompatActivity{
 
     private void setData(int aantal, PieChart chart, int maxECTS) {
         chart.setTouchEnabled(false);
-        Legend legend = chart.getLegend();
-        legend.setEnabled(false);
-        chart.getLegend().setEnabled(true);
+        chart.getLegend().setEnabled(false);
         Description description = new Description();
         description.setText("");
         chart.setDescription(description);
         chart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-        Double percentage = (double) ((aantal / maxECTS) * 100);
+        double aantalDouble = (double) aantal / (double) maxECTS;
+        Double percentage = round(aantalDouble * 100.0, 1);
         String percentageS = String.valueOf(percentage);
-        Log.d(String.valueOf(percentage), String.valueOf(percentageS));
         chart.setCenterText(percentageS + "%");
         ArrayList<PieEntry> yValues = new ArrayList<>();
-
         yValues.add(new PieEntry(aantal, 0));
         yValues.add(new PieEntry(maxECTS - aantal, 1));
         ArrayList<Integer> colors = new ArrayList<>();
         colors.add(Color.rgb(67,160,71));
         colors.add(Color.rgb(255,0,0));
         PieDataSet dataSet = new PieDataSet(yValues, "Studiepunten");
+        dataSet.setSliceSpace(2);
         dataSet.setColors(colors);
-
         PieData data = new PieData(dataSet);
+        data.setValueTextSize(16);
+        data.setValueFormatter(new MyValueFormatter());
         chart.setData(data);
         chart.invalidate();
-        Log.d("aantal =", String.valueOf(aantal));
+        Log.d("aantal", String.valueOf(aantal));
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
