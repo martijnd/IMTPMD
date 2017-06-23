@@ -7,14 +7,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.Arrays;
-
-import nl.martijndorsman.imtpmd.models.CourseModel;
 
 /**
  * Created by Martijn on 16/06/17.
@@ -23,7 +18,7 @@ import nl.martijndorsman.imtpmd.models.CourseModel;
 public class DatabaseAdapter {
     Context context;
     SQLiteDatabase db;
-    public DatabaseHelper helper;
+    DatabaseHelper helper;
 
     // Maak een DatabaseHelper object met de context van de huidige klasse
     public DatabaseAdapter(Context context){
@@ -74,7 +69,6 @@ public class DatabaseAdapter {
     public long update(String tabel, String name, String nieuwCijfer) {
         //Nieuwe waarde voor een kolom
         ContentValues values = new ContentValues();
-        Log.w("DB Values", values.toString());
         values.put(DatabaseInfo.CourseColumn.GRADE, nieuwCijfer);
         String selection = DatabaseInfo.CourseColumn.NAME + " = ?";
         String[] selectionArgs = new String[]{ name };

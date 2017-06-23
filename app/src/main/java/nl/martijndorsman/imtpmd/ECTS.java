@@ -2,8 +2,6 @@ package nl.martijndorsman.imtpmd;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Bundle;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -13,15 +11,10 @@ import nl.martijndorsman.imtpmd.models.CourseModel;
 /**
  * Created by Robert on 22-6-2017.
  */
-
+// Deze klassen is een ECTS object waar in de functies staan om de ECTS op te kunnen halen
 public class ECTS {
 
-    Context context;
-    DatabaseAdapter dbAdapter;
-    private static int totaalECTSjaar1;
-    private static int totaalECTSjaar2;
-    private static int totaalECTSjaar3en4;
-    private static int totaalECTSKeuze;
+    private Context context;
     private ArrayList<CourseModel> courses = new ArrayList<>();
 
 
@@ -62,11 +55,11 @@ public class ECTS {
 
     private int totaalBehaaldeECTS(String tabel) {
 
-        int etcs = 0;
+        int ects = 0;
         switch (tabel) {
             case "Jaar1":
 
-                totaalECTSjaar1 = 0;
+                int totaalECTSjaar1 = 0;
                 for (int i = 0; i < courses.size(); i++) {
                     Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
                     int ECTSint = Integer.parseInt(courses.get(i).getEcts());
@@ -74,10 +67,10 @@ public class ECTS {
                         totaalECTSjaar1 += ECTSint;
                     }
                 }
-                etcs = totaalECTSjaar1;
+                ects = totaalECTSjaar1;
             break;
             case "Jaar2":
-                totaalECTSjaar2 = 0;
+                int totaalECTSjaar2 = 0;
                 for (int i = 0; i < courses.size(); i++) {
                     Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
                     int ECTSint = Integer.parseInt(courses.get(i).getEcts());
@@ -85,10 +78,10 @@ public class ECTS {
                         totaalECTSjaar2 += ECTSint;
                     }
                 }
-                etcs =  totaalECTSjaar2;
+                ects = totaalECTSjaar2;
             break;
             case "Jaar3en4":
-                totaalECTSjaar3en4 = 0;
+                int totaalECTSjaar3en4 = 0;
                 for (int i = 0; i < courses.size(); i++) {
                     Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
                     int ECTSint = Integer.parseInt(courses.get(i).getEcts());
@@ -96,11 +89,10 @@ public class ECTS {
                         totaalECTSjaar3en4 += ECTSint;
                     }
                 }
-                ;
-                etcs =  totaalECTSjaar3en4;
+                ects = totaalECTSjaar3en4;
             break;
             case "Keuze":
-                totaalECTSKeuze = 0;
+                int totaalECTSKeuze = 0;
                 for (int i = 0; i < courses.size(); i++) {
                     Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
                     int ECTSint = Integer.parseInt(courses.get(i).getEcts());
@@ -108,9 +100,9 @@ public class ECTS {
                         totaalECTSKeuze += ECTSint;
                     }
                 }
-                etcs =  totaalECTSKeuze;
+                ects = totaalECTSKeuze;
             break;
         }
-        return etcs;
+        return ects;
     }
 }

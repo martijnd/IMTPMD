@@ -51,17 +51,12 @@ public class PopSpinner extends Activity{
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
                 item = s.getSelectedItem().toString();
-                Log.w("PopMessage", "Value of Item: " +  item);
                 if(!item.equals("Keuzevakken")) {
                     startActivity(new Intent(PopSpinner.this, VakkenlijstActivity.class));
-                    Log.w("PopMessage", "Value of boolean: " + keuzeVakkenIngesteld);
                 }
                 else{
                     if(!keuzeVakkenIngesteld) {
-                        Log.w("PopMessage", "Value of boolean: " + keuzeVakkenIngesteld);
                         keuzeVakkenIngesteld = true;
-                        Log.w("PopMessage", "Value of Item: " + item);
-                        Log.w("PopMessage", "Value of boolean: " + keuzeVakkenIngesteld);
                         startActivity(new Intent(PopSpinner.this, KeuzevakPopup.class));
                     } else {
                         startActivity((new Intent(PopSpinner.this, VakkenlijstActivity.class)));

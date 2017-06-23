@@ -44,10 +44,10 @@ public class VakkenlijstActivity extends AppCompatActivity {
     public static int totaalECTSjaar2;
     public static int totaalECTSjaar3en4;
     public static int totaalECTSKeuze;
+    ECTS ects;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vakkenlijst);
         // maak een JsonTask Object aan en voer hem uit met de url
@@ -64,10 +64,11 @@ public class VakkenlijstActivity extends AppCompatActivity {
         adapter = new MyAdapter(this, courses);
         // laad de tabel afhankelijk van de waarde van de PopSpinner
         tableSwitch();
-        totaalBehaaldeECTS(currentTable);
+        ects = new ECTS(getApplicationContext());
+        ects.getECTS(currentTable);
+
         adapter.notifyDataSetChanged();
     }
-
 
     // Retrieve en bind het aan de recyclerview
     public void retrieve(String tabel, Context context) {
@@ -76,7 +77,7 @@ public class VakkenlijstActivity extends AppCompatActivity {
         courses.clear();
 
         Cursor c = dbAdapter.getAllData(tabel);
-        //LOOP EN VOEG AAN ARRAYLIST TOE
+        //Loop en voeg aan ArrayList toe
         while (c.moveToNext()) {
             String name = c.getString(0);
             String ects = c.getString(1);
@@ -88,10 +89,10 @@ public class VakkenlijstActivity extends AppCompatActivity {
                 status = "Behaald";
             }
             CourseModel p = new CourseModel(name, ects, period, grade, status);
-            //VOEG TOE AAN ARRAYLIST
+            //Voeg toe aan de ArrayList
             courses.add(p);
         }
-        //CHECK OF DE ARRAYLIST LEEG IS
+        //Controleer of de ArrayList leeg is
         if (!(courses.size() < 1)) {
             rv.setAdapter(adapter);
         }
@@ -104,9 +105,8 @@ public class VakkenlijstActivity extends AppCompatActivity {
         dbAdapter = new DatabaseAdapter(context);
         dbAdapter.openDB();
         courses.clear();
-        Log.d("KAAS ", item2);
         Cursor c = dbAdapter.getAllData(tabel);
-        //LOOP EN VOEG AAN ARRAYLIST TOE
+        //Loop en voeg aan ArrayList toe
         while (c.moveToNext()) {
             String name = c.getString(0);
             String ects = c.getString(1);
@@ -119,11 +119,11 @@ public class VakkenlijstActivity extends AppCompatActivity {
             }
             if(name.equals(item1) || name.equals(item2) || name.equals(item3) || name.equals(item4)) {
                 CourseModel p = new CourseModel(name, ects, period, grade, status);
-                //VOEG TOE AAN ARRAYLIST
+                //Voeg toe aan ArrayList
                 courses.add(p);
             }
         }
-        //CHECK OF DE ARRAYLIST LEEG IS
+        //Check of ArrayList leeg is
         if (!(courses.size() < 1)) {
             rv.setAdapter(adapter);
         }
@@ -134,9 +134,8 @@ public class VakkenlijstActivity extends AppCompatActivity {
     // Functie om aan de hand van de waarde van de popSpinner de retrieve functie te laden met de juiste waardes
     private void tableSwitch (){
         switch (item){
-            case "Jaar 1":
+            case "Jaar 1": retrieve(Jaar1, this);
                 currentTable = "Jaar1";
-                retrieve(Jaar1, this);
                 break;
             case "Jaar 2": retrieve(Jaar2, this);
                 currentTable = "Jaar2";
@@ -149,54 +148,5 @@ public class VakkenlijstActivity extends AppCompatActivity {
                 currentTable = "Keuze";
                 break;
         }
-    }
-
-    public void totaalBehaaldeECTS(String tabel){
-        switch(tabel){
-            case "Jaar1":
-
-                totaalECTSjaar1 = 0;
-                for (int i = 0; i < courses.size(); i++){
-                    Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
-                    int ECTSint = Integer.parseInt(courses.get(i).getEcts());
-                    if (gradeDouble >= 5.5){
-                        totaalECTSjaar1 += ECTSint;
-                    }
-                }
-                Log.d("Wordt uitgevoerd", tabel);
-                break;
-            case "Jaar2":
-                totaalECTSjaar2 = 0;
-                for (int i = 0; i < courses.size(); i++){
-                    Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
-                    int ECTSint = Integer.parseInt(courses.get(i).getEcts());
-                    if (gradeDouble >= 5.5){
-                        totaalECTSjaar2 += ECTSint;
-                    }
-                }
-                break;
-            case "Jaar3en4":
-                totaalECTSjaar3en4 = 0;
-                for (int i = 0; i < courses.size(); i++){
-                    Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
-                    int ECTSint = Integer.parseInt(courses.get(i).getEcts());
-                    if (gradeDouble >= 5.5){
-                        totaalECTSjaar3en4 += ECTSint;
-                    }
-                };
-                break;
-            case "Keuze":
-                totaalECTSKeuze = 0;
-                for (int i = 0; i < courses.size(); i++){
-                    Double gradeDouble = Double.parseDouble(courses.get(i).getGrade());
-                    int ECTSint = Integer.parseInt(courses.get(i).getEcts());
-                    if (gradeDouble >= 5.5){
-                        totaalECTSKeuze += ECTSint;
-                    }
-                }
-
-
-        }
-        Log.d(String.valueOf(totaalECTSjaar1), String.valueOf(totaalECTSjaar2));
     }
 }

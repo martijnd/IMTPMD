@@ -8,11 +8,11 @@ import java.io.Serializable;
 
 // Klasse waarin het model van een course staat vastgesteld, samen met de getters en setters
 public class CourseModel implements Serializable {
-    public String name;
-    public String ects;
-    public String period;
-    public String grade;
-    public String status;
+    String name;
+    String ects;
+    String period;
+    String grade;
+    String status;
 
     //constructor
     public CourseModel(String courseName, String ects, String period, String grade, String status){

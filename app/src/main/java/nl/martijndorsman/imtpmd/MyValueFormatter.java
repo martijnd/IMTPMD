@@ -9,18 +9,19 @@ import java.text.DecimalFormat;
 /**
  * Created by Martijn on 23/06/17.
  */
-
+//  Klasse om de Format in te stellen van de Studiepunten value in de PieChart
+//  Hierdoor worden de studiepunten hele getallen zonder decimalen
+//  Deze klasse hoort bij de MPAndroidChart library
 public class MyValueFormatter implements IValueFormatter {
 
     private DecimalFormat mFormat;
 
     public MyValueFormatter() {
-        mFormat = new DecimalFormat("###,###,##0"); // use one decimal
+        mFormat = new DecimalFormat("###,###,##0"); // geen decimalen
     }
 
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-        // write your logic here
-        return mFormat.format(value); // e.g. append a dollar-sign
+        return mFormat.format(value);
     }
 }

@@ -1,12 +1,10 @@
 package nl.martijndorsman.imtpmd;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -16,17 +14,11 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import nl.martijndorsman.imtpmd.database.DatabaseAdapter;
-import nl.martijndorsman.imtpmd.models.CourseModel;
 
-import static nl.martijndorsman.imtpmd.VakkenlijstActivity.adapter;
-import static nl.martijndorsman.imtpmd.VakkenlijstActivity.currentTable;
-import static nl.martijndorsman.imtpmd.VakkenlijstActivity.rv;
 import static nl.martijndorsman.imtpmd.database.DatabaseInfo.CourseTables.Keuze;
 
 /**
@@ -44,7 +36,6 @@ public class KeuzevakPopup extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.choosesubjectwindow);
         keuzevakken = new ArrayList<>();
-        Log.d(String.valueOf(keuzevakken.size()), "Test");
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
@@ -71,7 +62,6 @@ public class KeuzevakPopup extends Activity {
         for (int i = 0;i < keuzevakken.size();i++){
             arraySpinner.add(keuzevakken.get(i));
         }
-        Log.d(String.valueOf(keuzevakken.size()), "Test1");
         final Spinner s1 = (Spinner) findViewById(R.id.subjectSpinner1);
         final Spinner s2 = (Spinner) findViewById(R.id.subjectSpinner2);
         final Spinner s3 = (Spinner) findViewById(R.id.subjectSpinner3);

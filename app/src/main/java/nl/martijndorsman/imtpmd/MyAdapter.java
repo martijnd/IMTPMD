@@ -37,7 +37,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
     private String newGrade;
     private TextView statustxt;
     Context context;
-    VakkenlijstActivity vlActivity = new VakkenlijstActivity();
+    ECTS ects;
     // Een arraylist volgens de layout van de Coursemodel klasse
     ArrayList<CourseModel> courses;
 
@@ -52,8 +52,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
         // Stel de view in met de LayoutInflater en de contxt. Vervolgens inflate de items van de recyclerview
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerviewitem, null);
         // holder
-        MyHolder holder = new MyHolder(v);
-        return holder;
+        return new MyHolder(v);
 
     }
 
@@ -94,7 +93,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
         final DatabaseAdapter dbAdapter = new DatabaseAdapter(context);
         final Dialog d = new Dialog(context);
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Log.d("Test", "Geklikt op item");
         d.setContentView(R.layout.gradeeditwindow);
         gradetxt = (EditText) d.findViewById(R.id.etGradeEdit);
         gradeButton = (Button) d.findViewById(R.id.gradeButton);
@@ -127,7 +125,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
                         dbAdapter.update(tabel, name, newGrade);
                         d.dismiss();
                         // Vraag de nieuwe info op uit de database
-                        vlActivity.retrieve(tabel, context);
+                        ects = new ECTS(context);
+                        ects.getECTS(tabel);
+
                         // Sluit de database weer netjes
                         dbAdapter.closeDB();
                         courses.get(pos).setGrade(newGrade);
@@ -138,6 +138,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
                         } else {
                             courses.get(pos).setStatus("Niet behaald");
                         }
+                        notifyDataSetChanged();
                         // Show een Toast wanneer de input leeg is of geen legitiem cijfer is
                     } else {
                         Toast.makeText(context, "Geef een cijfer tussen de 1 en 10", Toast.LENGTH_SHORT).show();
@@ -174,7 +175,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
                         totaalECTSjaar1 += ECTSint;
                     }
                 }
-                Log.d("Wordt uitgevoerd", tabel);
                 break;
             case "Jaar2":
                 totaalECTSjaar2 = 0;
@@ -194,7 +194,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
                     if (gradeDouble >= 5.5){
                         totaalECTSjaar3en4 += ECTSint;
                     }
-                };
+                }
                 break;
             case "Keuze":
                 totaalECTSKeuze = 0;
@@ -205,9 +205,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
                         totaalECTSKeuze += ECTSint;
                     }
                 }
-
-
         }
-        Log.d(String.valueOf(totaalECTSjaar1), String.valueOf(totaalECTSjaar2));
     }
 }
